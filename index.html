@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keisha Liferaft Digital Inspection & B4 Certification System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Strict B4 Print Styles (250mm x 353mm per page) */
+    @page {
+      size: 250mm 353mm;
+      margin: 6mm;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .b4-certificate-page, .b4-certificate-page * {
+        visibility: visible;
+      }
+      .b4-certificate-page {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 238mm !important;
+        min-height: 341mm !important;
+        margin: 0 !important;
+        padding: 4mm !important;
+        box-shadow: none !important;
+        border: 2px solid #000 !important;
+        background: #fff !important;
+        page-break-after: always;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 no-print border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center font-black text-slate-950 text-xl tracking-wider shadow">
+          KL
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            KEISHA LIFERAFT SYSTEM
+            <span class="text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded">Checklist Rev 03 & B4 Certs</span>
+          </h1>
+          <p class="text-xs text-slate-400">Full Compliance Checklist • Supervisor Approval Gate • 3-Page B4 Official PDFs</p>
+        </div>
+      </div>
+
+      <!-- Navigation tabs -->
+      <nav class="flex items-center gap-1 bg-slate-800 p-1 rounded-xl text-sm font-medium overflow-x-auto">
+        <button onclick="switchTab('tab-app')" id="btn-app" class="tab-btn px-3 py-1.5 rounded-lg text-white bg-blue-600 transition shadow whitespace-nowrap">
+          1. Technician & Supervisor Checklist
+        </button>
+        <button onclick="switchTab('tab-cert1')" id="btn-cert1" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition whitespace-nowrap">
+          2. B4 Cert Page 1 (Master)
+        </button>
+        <button onclick="switchTab('tab-cert2')" id="btn-cert2" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition whitespace-nowrap">
+          3. B4 Cert Page 2 (Pyrotechnics)
+        </button>
+        <button onclick="switchTab('tab-cert3')" id="btn-cert3" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition whitespace-nowrap">
+          4. B4 Cert Page 3 (Cylinders & Provisions)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+    
+    <!-- Checklist Tab -->
+    <div id="tab-app" class="tab-content space-y-6">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-slate-500">Current Role Mode:</span>
+          <select id="role-selector" onchange="toggleRole()" class="bg-slate-100 border border-slate-300 font-bold text-slate-800 rounded-lg px-2.5 py-1 text-xs">
+            <option value="technician">Technician (Shipyard Inspection Mode - Offline Ready)</option>
+            <option value="supervisor">Supervisor (Review & Approval Gate)</option>
+            <option value="admin">Admin (Full Access & Print Queue)</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+            Offline Cache: Active
+          </span>
+          <span id="badge-status" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase bg-amber-100 text-amber-800 border border-amber-200">
+            Draft
+          </span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="bg-slate-900 text-white p-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-bold">KEISHA LIFERAFT CHECKLIST NEW 03 (Rev 03) - Master Compliance Form</h2>
+            <p class="text-xs text-slate-400">Complete all inspection points. Certificates reflect exact checklist data upon supervisor approval.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="fillSampleData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 text-xs font-semibold rounded-lg transition">
+              Load Editable Dummy Data
+            </button>
+            <button onclick="clearForm()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition">
+              Clear All
+            </button>
+          </div>
+        </div>
+
+        <form id="inspection-form" class="p-6 space-y-8" onsubmit="event.preventDefault();">
+          <!-- Section 1: Vessel Particulars -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Vessel & Liferaft Particulars</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+              <div><label class="block font-semibold text-slate-700 mb-1">Vessel Name *</label><input type="text" id="f_vessel" value="MV PACIFIC EXPLORER" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Certificate No. *</label><input type="text" id="f_cert_no" value="KLR-2026-089" oninput="syncCertificates()" class="w-full p-2 border rounded-lg bg-slate-50"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Port of Registry *</label><input type="text" id="f_port" value="PORT KLANG" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Date of Inspection *</label><input type="date" id="f_insp_date" value="2026-10-10" oninput="autoCalcNextInspection(); syncCertificates();" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Next Inspection Date</label><input type="date" id="f_next_insp_date" value="2027-10-09" oninput="syncCertificates()" class="w-full p-2 border rounded-lg bg-slate-50"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Brand *</label><input type="text" id="f_brand" value="YOULONG" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Capacity (Persons) *</label><input type="number" id="f_capacity" value="25" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Serial Number (S/N) *</label><input type="text" id="f_sn" value="YL-25-88410" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Type *</label><input type="text" id="f_type" value="KHK-25 (THROW OVERBOARD)" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Maker *</label><input type="text" id="f_maker" value="SHANGHAI YOULONG RUBBER PRODUCTS" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">DOM *</label><input type="text" id="f_dom" value="03 / 2021" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Painter Line Length (M)</label><input type="number" id="f_painter_len" value="28" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+              <div><label class="block font-semibold text-slate-700 mb-1">Max Storage Height (M)</label><input type="number" id="f_max_height" value="18" oninput="syncCertificates()" class="w-full p-2 border rounded-lg"></div>
+            </div>
+          </div>
+
+          <!-- Section 2: Cylinders -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Gas Cylinder Records (Cylinder No. 1 & No. 2)</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 text-xs space-y-3">
+                <span class="font-bold text-slate-800 text-sm block border-b pb-1">Cylinder #1</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-slate-600">Serial No.</label><input type="text" id="f_cyl1_no" value="CYL-A-9901" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Hydro Test</label><input type="text" id="f_cyl1_hyd" value="09 / 2024" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Tare (Kg)</label><input type="number" step="0.01" id="f_cyl1_tare" value="14.20" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">CO₂ (Kg)</label><input type="number" step="0.01" id="f_cyl1_co2" value="4.50" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">N₂ (Kg)</label><input type="number" step="0.01" id="f_cyl1_n2" value="0.30" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Measured (Kg)</label><input type="number" step="0.01" id="f_cyl1_measured" value="18.95" oninput="syncCertificates()" class="w-full p-1.5 border border-blue-400 bg-blue-50 font-bold rounded"></div>
+                </div>
+              </div>
+              <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 text-xs space-y-3">
+                <span class="font-bold text-slate-800 text-sm block border-b pb-1">Cylinder #2</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-slate-600">Serial No.</label><input type="text" id="f_cyl2_no" value="CYL-B-9902" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Hydro Test</label><input type="text" id="f_cyl2_hyd" value="09 / 2024" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Tare (Kg)</label><input type="number" step="0.01" id="f_cyl2_tare" value="14.20" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">CO₂ (Kg)</label><input type="number" step="0.01" id="f_cyl2_co2" value="4.50" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">N₂ (Kg)</label><input type="number" step="0.01" id="f_cyl2_n2" value="0.30" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Measured (Kg)</label><input type="number" step="0.01" id="f_cyl2_measured" value="18.98" oninput="syncCertificates()" class="w-full p-1.5 border border-blue-400 bg-blue-50 font-bold rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Emergency Pack & Pyrotechnics -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Emergency Pack, Pyrotechnics & Provisions Expiry Schedule</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Red Hand Flares</span><input type="month" id="f_exp_flare" value="2028-05" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Parachute Rockets</span><input type="month" id="f_exp_rocket" value="2028-05" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Buoyant Smoke Signals</span><input type="month" id="f_exp_smoke" value="2028-06" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Drinking Water 500ml</span><input type="month" id="f_exp_water" value="2029-08" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Food Rations 500gm</span><input type="month" id="f_exp_food" value="2029-04" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">First Aid Kit</span><input type="month" id="f_exp_fak" value="2027-11" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Lithium Battery RSFD-2</span><input type="month" id="f_exp_battery" value="2030-01" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Anti-Seasickness Tablets</span><input type="month" id="f_exp_tablets" value="2027-09" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+            </div>
+          </div>
+
+          <!-- Section 4: Full Official Checklist Compliance Items -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">4</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Full Official Checklist Items Checked (Rev 03 Compliance)</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
+                <span class="font-bold text-slate-900 block pb-1 border-b">Valves, Container & Fittings</span>
+                <div class="space-y-1.5">
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Pressure Relief Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Inlet Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Fibrewasher-2 pcs</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>REPLACED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Topping Up Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Deflation Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Fibreglass Container</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>INSPECTED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Ship's Name On Container</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>PAINTED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>All Label for Container</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>REPLACED</span></div>
+                </div>
+              </div>
+              <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
+                <span class="font-bold text-slate-900 block pb-1 border-b">Equipment & Survival Pack Schedule</span>
+                <div class="space-y-1.5">
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Exterior Light Assembly</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Interior Light Assembly</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Log Card & Pocket</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>REPLACED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Painter Line</span><input type="text" value="28M" class="p-1 border rounded bg-white"><span>VERIFIED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Sea Anchor</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>INSPECTED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Thermal Protective Aids</span><input type="text" value="10" class="p-1 border rounded bg-white"><span>VERIFIED</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Rescue Quoit & Line</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
+                  <div class="grid grid-cols-3 gap-2 items-center"><span>Signaling Torch</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>TESTED</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: Pressure Test Log -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">5</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Chamber Pressure Test Log & PRV Settings</h3>
+            </div>
+            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 border-b border-slate-200 font-bold text-[11px]">
+                  <tr>
+                    <th class="p-2 border-r">Chamber</th>
+                    <th class="p-2 border-r text-center">Time On</th>
+                    <th class="p-2 border-r text-center">Temp (°C)</th>
+                    <th class="p-2 border-r text-center">Working Pressure (MmHg)</th>
+                    <th class="p-2 border-r text-center">Time Off</th>
+                    <th class="p-2 border-r text-center">Temp (°C)</th>
+                    <th class="p-2 text-center">Final Working Pressure (MmHg)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 font-mono-code text-[11px]">
+                  <tr><td class="p-2 font-sans font-bold border-r">Lower Buoyancy</td><td class="p-2 text-center border-r">08:00</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">120 MmHg</td><td class="p-2 text-center border-r">14:00</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">118 MmHg</td></tr>
+                  <tr><td class="p-2 font-sans font-bold border-r">Upper Buoyancy</td><td class="p-2 text-center border-r">08:00</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">122 MmHg</td><td class="p-2 text-center border-r">14:00</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">120 MmHg</td></tr>
+                  <tr><td class="p-2 font-sans font-bold border-r">Floor</td><td class="p-2 text-center border-r">08:30</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">100 MmHg</td><td class="p-2 text-center border-r">14:30</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">99 MmHg</td></tr>
+                  <tr><td class="p-2 font-sans font-bold border-r">Centre Column</td><td class="p-2 text-center border-r">08:30</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">100 MmHg</td><td class="p-2 text-center border-r">14:30</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">99 MmHg</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 6: Sign-off -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div class="p-4 bg-blue-50/60 border border-blue-200 rounded-xl space-y-3">
+              <h4 class="font-bold text-slate-900 text-sm">Technician Sign-Off</h4>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div><label class="font-semibold">Technician Name *</label><input type="text" id="f_tech_name" value="MOHD AZLAN BIN ISMAIL" oninput="syncCertificates()" class="w-full p-2 border rounded bg-white mt-1"></div>
+                <div><label class="font-semibold">Tech ID</label><input type="text" id="f_tech_id" value="TECH-KLR-042" class="w-full p-2 border rounded bg-white mt-1"></div>
+              </div>
+              <div class="flex justify-end pt-2">
+                <button type="button" onclick="submitTechnician()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider shadow">
+                  Submit Checklist for Review
+                </button>
+              </div>
+            </div>
+
+            <div id="supervisor-panel" class="p-4 bg-amber-50/80 border border-amber-300 rounded-xl space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-slate-900 text-sm">Supervisor Verification Gate</h4>
+                <span id="supervisor-lock-label" class="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-200 text-amber-900">Awaiting Submission</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div><label class="font-semibold">Supervisor Name</label><input type="text" id="f_super_name" value="CAPTAIN K. CHEN" oninput="syncCertificates()" class="w-full p-2 border rounded bg-white mt-1"></div>
+                <div>
+                  <label class="font-semibold">Decision</label>
+                  <select id="f_super_decision" class="w-full p-2 border rounded bg-white mt-1 font-bold">
+                    <option value="Approved">APPROVE & UNLOCK 3-PAGE B4 CERT</option>
+                    <option value="Rejected">REJECT / RETURN</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end pt-2">
+                <button type="button" onclick="approveSupervisor()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow">
+                  Authorize & Unlock B4 Certificates
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- B4 Certificate Page 1 (Master) -->
+    <div id="tab-cert1" class="tab-content hidden space-y-6">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4 no-print">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Certificate Page 1: Master Checklist & Compliance Record</h2>
+          <p class="text-xs text-slate-500">Official B4 format ($250 \times 353\text{ mm}$). Reflects exact checklist data with authorized signatories.</p>
+        </div>
+        <button onclick="window.print()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition flex items-center gap-2">
+          Print All 3 B4 Certificate Pages
+        </button>
+      </div>
+
+      <div class="flex justify-center p-2 sm:p-6 bg-slate-200 rounded-2xl overflow-x-auto">
+        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 font-sans border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-size: 8.5px;">
+          <div>
+            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+              <div class="col-span-7 space-y-0.5">
+                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-mono-code font-bold uppercase ml-1" id="c1_vessel"></span></div>
+                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="font-mono-code uppercase ml-1" id="c1_port"></span></div>
+              </div>
+              <div class="col-span-5 space-y-0.5 border-l border-slate-900 pl-2">
+                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-mono-code font-bold text-red-600" id="c1_cert_no"></span></div>
+                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-mono-code font-bold" id="c1_date_insp"></span></div>
+                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-mono-code font-bold text-red-600" id="c1_next_date"></span></div>
+              </div>
+            </div>
+
+            <div class="mt-1 border-x-2 border-b-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+              <div class="col-span-6 flex"><span class="w-20 font-bold">BRAND</span>: <span class="font-mono-code ml-1" id="c1_brand"></span></div>
+              <div class="col-span-6 flex"><span class="w-24 font-bold">CAPACITY</span>: <span class="font-mono-code ml-1" id="c1_capacity"></span></div>
+              <div class="col-span-6 flex"><span class="w-20 font-bold">MAKER</span>: <span class="font-mono-code ml-1" id="c1_maker"></span></div>
+              <div class="col-span-6 flex"><span class="w-24 font-bold">S/N</span>: <span class="font-mono-code font-bold ml-1" id="c1_sn"></span></div>
+              <div class="col-span-6 flex"><span class="w-20 font-bold">TYPE</span>: <span class="font-mono-code ml-1" id="c1_type"></span></div>
+              <div class="col-span-6 flex"><span class="w-24 font-bold">DOM</span>: <span class="font-mono-code ml-1" id="c1_dom"></span></div>
+              <div class="col-span-6 flex"><span class="w-32 font-bold">Length of Painter Line</span>: <span class="font-mono-code ml-1" id="c1_painter"></span> Meters</div>
+              <div class="col-span-6 flex"><span class="w-32 font-bold">Max. Storage Height</span>: <span class="font-mono-code ml-1" id="c1_height"></span> Meters</div>
+            </div>
+
+            <div class="mt-1.5 grid grid-cols-2 gap-1.5">
+              <div class="border border-slate-900 p-1.5">
+                <div class="bg-slate-900 text-white font-bold p-0.5 text-center text-[8px] uppercase">CYLINDER SUMMARY</div>
+                <div class="p-1 space-y-1 font-mono-code text-[8.5px]">
+                  <div class="flex justify-between border-b pb-0.5"><span>Cyl #1 Serial:</span><strong id="c1_cyl1_no"></strong></div>
+                  <div class="flex justify-between border-b pb-0.5"><span>Cyl #1 Measured Wt:</span><strong id="c1_cyl1_meas"></strong></div>
+                  <div class="flex justify-between border-b pb-0.5"><span>Cyl #2 Serial:</span><strong id="c1_cyl2_no"></strong></div>
+                  <div class="flex justify-between"><span>Cyl #2 Measured Wt:</span><strong id="c1_cyl2_meas"></strong></div>
+                </div>
+              </div>
+              <div class="border border-slate-900 p-1.5">
+                <div class="bg-slate-900 text-white font-bold p-0.5 text-center text-[8px] uppercase">PRESSURE RELIEF & TESTS</div>
+                <div class="p-1 space-y-1 font-mono-code text-[8.5px]">
+                  <div class="flex justify-between border-b pb-0.5"><span>Lower Buoyancy PRV:</span><strong>ON: 120 / OFF: 110 mmHg</strong></div>
+                  <div class="flex justify-between border-b pb-0.5"><span>Upper Buoyancy PRV:</span><strong>ON: 122 / OFF: 112 mmHg</strong></div>
+                  <div class="flex justify-between border-b pb-0.5"><span>GIT Test:</span><strong class="text-emerald-700">PASSED</strong></div>
+                  <div class="flex justify-between"><span>Floor Seam Test:</span><strong class="text-emerald-700">PASSED</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 border border-slate-900 p-2 text-center bg-slate-50">
+              <p class="text-[8px] text-slate-800 leading-tight">
+                This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with the international convention for Safety Of Life At Sea (SOLAS) 1974/1996. This certificate valid for twelve months (12) From the date of inspection.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-[8.5px] pt-2 border-t border-slate-300">
+            <div class="border border-slate-900 p-1.5 text-center">
+              <span class="font-bold block uppercase text-[7.5px] text-slate-500">Service By (Technician)</span>
+              <div class="py-1.5 font-mono-code font-bold text-blue-900" id="c1_sign_tech"></div>
+            </div>
+            <div class="border border-slate-900 p-1.5 text-center bg-slate-50">
+              <span class="font-bold block uppercase text-[7.5px] text-slate-500">Inspect By / Authorised Signature</span>
+              <div class="py-1.5 font-mono-code font-bold text-emerald-900" id="c1_sign_super"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B4 Certificate Page 2 (Office PDF 1 - Pyrotechnics) -->
+    <div id="tab-cert2" class="tab-content hidden space-y-6">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4 no-print">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Certificate Page 2: Office PDF 1 (Pyrotechnics & Equipment Schedule)</h2>
+          <p class="text-xs text-slate-500">Official B4 format with exact corporate footer matching certified ISO 9001 / UKAS branding.</p>
+        </div>
+        <button onclick="window.print()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition flex items-center gap-2">
+          Print B4 Certificate
+        </button>
+      </div>
+
+      <div class="flex justify-center p-2 sm:p-6 bg-slate-200 rounded-2xl overflow-x-auto">
+        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 font-sans border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-size: 8.5px;">
+          <div>
+            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+              <div class="col-span-7 space-y-0.5">
+                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-mono-code font-bold uppercase ml-1" id="c2_vessel"></span></div>
+                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="font-mono-code uppercase ml-1" id="c2_port"></span></div>
+                <div class="flex"><span class="w-32 font-bold">BRAND</span>: <span class="font-mono-code ml-1" id="c2_brand"></span></div>
+                <div class="flex"><span class="w-32 font-bold">MAKER</span>: <span class="font-mono-code ml-1" id="c2_maker"></span></div>
+              </div>
+              <div class="col-span-5 space-y-0.5 border-l border-slate-900 pl-2">
+                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-mono-code font-bold text-red-600" id="c2_cert_no"></span></div>
+                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-mono-code font-bold" id="c2_date_insp"></span></div>
+                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-mono-code font-bold text-red-600" id="c2_next_date"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CAPACITY / S/N</span>: <span class="font-mono-code ml-1" id="c2_cap_sn"></span></div>
+              </div>
+            </div>
+
+            <div class="mt-3 border-2 border-slate-900">
+              <div class="bg-slate-900 text-white font-bold p-1 text-center uppercase text-[8.5px]">PYROTECHNICS & SURVIVAL EQUIPMENT SCHEDULE</div>
+              <table class="w-full text-left border-collapse text-[8.5px]">
+                <thead>
+                  <tr class="bg-slate-100 border-b border-slate-900 font-bold">
+                    <th class="p-1.5 border-r border-slate-900">EQUIPMENT / ITEM DESCRIPTION</th>
+                    <th class="p-1.5 text-center border-r border-slate-900 w-28">STATUS</th>
+                    <th class="p-1.5 text-center w-36">EXPIRY DATE</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-300 font-mono-code">
+                  <tr><td class="p-1.5 border-r border-slate-900">Red Hand Flares</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_flare"></td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Parachute Rockets</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_rocket"></td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Buoyant Smoke Signals</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_smoke"></td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">First Aid Kit</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">VERIFIED</td><td class="p-1.5 text-center font-bold" id="c2_fak"></td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Lithium Battery RSFD-2</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_bat"></td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Anti-Seasickness Tablets</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">VERIFIED</td><td class="p-1.5 text-center font-bold" id="c2_tab"></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="text-[8px] text-slate-700 text-center leading-tight mt-3">
+              This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with the international convention for Safety Of Life At Sea (SOLAS) 1974/1996. This certificate valid for twelve months (12) From the date of inspection.
+            </p>
+          </div>
+
+          <!-- EXACT CORPORATE FOOTER -->
+          <div class="space-y-2">
+            <div class="flex justify-end pr-8">
+              <div class="text-center">
+                <div class="h-6 font-mono font-bold text-emerald-800 text-xs" id="c2_sign"></div>
+                <div class="border-t border-slate-900 pt-0.5 font-bold text-[7.5px]">AUTHORISED SIGNATURE</div>
+              </div>
+            </div>
+
+            <div class="border-t-2 border-slate-900 pt-2 text-[6.5px] text-slate-800">
+              <div class="grid grid-cols-12 gap-1 items-start">
+                <div class="col-span-2 flex items-center space-x-1 border border-blue-900 p-1 bg-white">
+                  <div class="border border-blue-900 p-0.5 text-center font-bold text-[7px] text-blue-900 leading-none">
+                    CERTIFIED<br><span class="text-[11px]">R</span><br><span class="text-[5px]">ISO 9001</span>
+                  </div>
+                  <div class="text-center font-bold text-[6.5px] text-blue-900">
+                    <div class="border border-blue-900 px-0.5">UKAS</div>
+                    <div class="text-[4.5px] mt-0.5">001</div>
+                  </div>
+                </div>
+
+                <div class="col-span-4 border-l border-slate-400 pl-1.5 space-y-0.5">
+                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE SERVICES SDN BHD</div>
+                  <div>200801012887 (814175-D)</div>
+                  <div class="font-bold">HEAD OFFICE :</div>
+                  <div>No. 21 & 23, Jalan Selat Selatan 7/KS05,<br>Taman Perindustrian Sobena Jaya, Pandamaran,<br>42000 Port Klang, Selangor Darul Ehsan, Malaysia.</div>
+                  <div>Tel &nbsp;: +603 - 3166 9717 / 3166 9716</div>
+                  <div>Fax &nbsp;: +603 - 3166 9727</div>
+                  <div>Email : keisha88@keishamarine.com</div>
+                </div>
+
+                <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
+                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div>201301004175 (1034018-W)</div>
+                  <div class="font-bold">MIRI BRANCH OFFICE :</div>
+                  <div>Lot 977 & 978, Block 5, Lorong Desa Senadin,<br>1A-1A, Off Jalan Lutong, 98000 Miri, Sarawak, Malaysia.</div>
+                  <div>Tel &nbsp;: +6085 - 628 555 / 628 585</div>
+                  <div>Fax &nbsp;: +6085 - 628 855</div>
+                  <div>Email : keishasb@keishamarine.com</div>
+                </div>
+
+                <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
+                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div>201301004175 (1034018-W)</div>
+                  <div class="font-bold">LABUAN BRANCH OFFICE :</div>
+                  <div>Lot 17 & 18, Lusu Warehouse,<br>Jalan Patau-Patau, 87000 W.P. Labuan, Malaysia.</div>
+                  <div>Tel &nbsp;: +6087 - 422 392 / 422 393</div>
+                  <div>Fax &nbsp;: +6087 - 422 391</div>
+                  <div>Email : keishasb@keishamarine.com</div>
+                </div>
+              </div>
+              <div class="text-center font-bold text-slate-900 text-[8px] mt-2 border-t pt-1">
+                www.keishamarine.com
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B4 Certificate Page 3 (Office PDF 2 - Cylinders & Provisions) -->
+    <div id="tab-cert3" class="tab-content hidden space-y-6">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4 no-print">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Certificate Page 3: Office PDF 2 (Cylinders & Provisions Log)</h2>
+          <p class="text-xs text-slate-500">Official B4 format with exact corporate footer matching certified ISO 9001 / UKAS branding.</p>
+        </div>
+        <button onclick="window.print()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition flex items-center gap-2">
+          Print B4 Certificate
+        </button>
+      </div>
+
+      <div class="flex justify-center p-2 sm:p-6 bg-slate-200 rounded-2xl overflow-x-auto">
+        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 font-sans border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-size: 8.5px;">
+          <div>
+            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+              <div class="col-span-7 space-y-0.5">
+                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-mono-code font-bold uppercase ml-1" id="c3_vessel"></span></div>
+                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="font-mono-code uppercase ml-1" id="c3_port"></span></div>
+                <div class="flex"><span class="w-32 font-bold">BRAND</span>: <span class="font-mono-code ml-1" id="c3_brand"></span></div>
+                <div class="flex"><span class="w-32 font-bold">MAKER</span>: <span class="font-mono-code ml-1" id="c3_maker"></span></div>
+              </div>
+              <div class="col-span-5 space-y-0.5 border-l border-slate-900 pl-2">
+                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-mono-code font-bold text-red-600" id="c3_cert_no"></span></div>
+                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-mono-code font-bold" id="c3_date_insp"></span></div>
+                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-mono-code font-bold text-red-600" id="c3_next_date"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CAPACITY / S/N</span>: <span class="font-mono-code ml-1" id="c3_cap_sn"></span></div>
+              </div>
+            </div>
+
+            <div class="mt-3 border-2 border-slate-900">
+              <div class="bg-slate-900 text-white font-bold p-1 text-center uppercase text-[8.5px]">GAS CYLINDERS & PROVISIONS EXPIRY LOG</div>
+              <div class="p-3 space-y-3">
+                <div class="grid grid-cols-2 gap-3 font-mono-code text-[9.5px]">
+                  <div class="p-2.5 border-2 border-slate-800 rounded bg-slate-50 space-y-1">
+                    <span class="font-bold text-slate-900 block border-b pb-0.5">CYLINDER NO. 1</span>
+                    <div>Serial No: <strong id="c3_cyl1_no"></strong></div>
+                    <div>Measured Weight: <strong id="c3_cyl1_meas" class="text-blue-900"></strong></div>
+                  </div>
+                  <div class="p-2.5 border-2 border-slate-800 rounded bg-slate-50 space-y-1">
+                    <span class="font-bold text-slate-900 block border-b pb-0.5">CYLINDER NO. 2</span>
+                    <div>Serial No: <strong id="c3_cyl2_no"></strong></div>
+                    <div>Measured Weight: <strong id="c3_cyl2_meas" class="text-blue-900"></strong></div>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 font-mono-code text-[9.5px] border-t pt-2">
+                  <div class="p-2.5 border rounded bg-white">
+                    <span class="font-bold text-slate-800 block">DRINKING WATER (500ml) EXPIRY</span>
+                    <strong class="text-red-700 text-sm" id="c3_water"></strong>
+                  </div>
+                  <div class="p-2.5 border rounded bg-white">
+                    <span class="font-bold text-slate-800 block">FOOD RATIONS (500gm) EXPIRY</span>
+                    <strong class="text-red-700 text-sm" id="c3_food"></strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-[8px] text-slate-700 text-center leading-tight mt-3">
+              This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with the international convention for Safety Of Life At Sea (SOLAS) 1974/1996. This certificate valid for twelve months (12) From the date of inspection.
+            </p>
+          </div>
+
+          <!-- EXACT CORPORATE FOOTER -->
+          <div class="space-y-2">
+            <div class="flex justify-end pr-8">
+              <div class="text-center">
+                <div class="h-6 font-mono font-bold text-emerald-800 text-xs" id="c3_sign"></div>
+                <div class="border-t border-slate-900 pt-0.5 font-bold text-[7.5px]">AUTHORISED SIGNATURE</div>
+              </div>
+            </div>
+
+            <div class="border-t-2 border-slate-900 pt-2 text-[6.5px] text-slate-800">
+              <div class="grid grid-cols-12 gap-1 items-start">
+                <div class="col-span-2 flex items-center space-x-1 border border-blue-900 p-1 bg-white">
+                  <div class="border border-blue-900 p-0.5 text-center font-bold text-[7px] text-blue-900 leading-none">
+                    CERTIFIED<br><span class="text-[11px]">R</span><br><span class="text-[5px]">ISO 9001</span>
+                  </div>
+                  <div class="text-center font-bold text-[6.5px] text-blue-900">
+                    <div class="border border-blue-900 px-0.5">UKAS</div>
+                    <div class="text-[4.5px] mt-0.5">001</div>
+                  </div>
+                </div>
+
+                <div class="col-span-4 border-l border-slate-400 pl-1.5 space-y-0.5">
+                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE SERVICES SDN BHD</div>
+                  <div>200801012887 (814175-D)</div>
+                  <div class="font-bold">HEAD OFFICE :</div>
+                  <div>No. 21 & 23, Jalan Selat Selatan 7/KS05,<br>Taman Perindustrian Sobena Jaya, Pandamaran,<br>42000 Port Klang, Selangor Darul Ehsan, Malaysia.</div>
+                  <div>Tel &nbsp;: +603 - 3166 9717 / 3166 9716</div>
+                  <div>Fax &nbsp;: +603 - 3166 9727</div>
+                  <div>Email : keisha88@keishamarine.com</div>
+                </div>
+
+                <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
+                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div>201301004175 (1034018-W)</div>
+                  <div class="font-bold">MIRI BRANCH OFFICE :</div>
+                  <div>Lot 977 & 978, Block 5, Lorong Desa Senadin,<br>1A-1A, Off Jalan Lutong, 98000 Miri, Sarawak, Malaysia.</div>
+                  <div>Tel &nbsp;: +6085 - 628 555 / 628 585</div>
+                  <div>Fax &nbsp;: +6085 - 628 855</div>
+                  <div>Email : keishasb@keishamarine.com</div>
+                </div>
+
+                <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
+                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div>201301004175 (1034018-W)</div>
+                  <div class="font-bold">LABUAN BRANCH OFFICE :</div>
+                  <div>Lot 17 & 18, Lusu Warehouse,<br>Jalan Patau-Patau, 87000 W.P. Labuan, Malaysia.</div>
+                  <div>Tel &nbsp;: +6087 - 422 392 / 422 393</div>
+                  <div>Fax &nbsp;: +6087 - 422 391</div>
+                  <div>Email : keishasb@keishamarine.com</div>
+                </div>
+              </div>
+              <div class="text-center font-bold text-slate-900 text-[8px] mt-2 border-t pt-1">
+                www.keishamarine.com
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Modal -->
+  <div id="toast-modal" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+    <div class="bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl border border-slate-700 flex items-center gap-3">
+      <div class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-xs font-bold text-slate-950">✓</div>
+      <div>
+        <h4 id="toast-title" class="text-xs font-bold uppercase tracking-wider text-slate-200">Success</h4>
+        <p id="toast-body" class="text-xs text-slate-400">Action completed successfully.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentRecordState = "Draft";
+    let currentRole = "technician";
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+      document.getElementById(tabId).classList.remove("hidden");
+
+      document.querySelectorAll(".tab-btn").forEach(b => {
+        b.classList.remove("bg-blue-600", "text-white");
+        b.classList.add("text-slate-300");
+      });
+
+      if (tabId === 'tab-app') document.getElementById('btn-app').classList.add("bg-blue-600", "text-white");
+      if (tabId === 'tab-cert1') {
+        document.getElementById('btn-cert1').classList.add("bg-blue-600", "text-white");
+        syncCertificates();
+      }
+      if (tabId === 'tab-cert2') {
+        document.getElementById('btn-cert2').classList.add("bg-blue-600", "text-white");
+        syncCertificates();
+      }
+      if (tabId === 'tab-cert3') {
+        document.getElementById('btn-cert3').classList.add("bg-blue-600", "text-white");
+        syncCertificates();
+      }
+    }
+
+    function toggleRole() {
+      currentRole = document.getElementById("role-selector").value;
+      const superPanel = document.getElementById("supervisor-panel");
+      if (currentRole === "technician") {
+        superPanel.classList.add("opacity-60", "pointer-events-none");
+        showToast("Technician Mode", "Offline inspection entry enabled.");
+      } else {
+        superPanel.classList.remove("opacity-60", "pointer-events-none");
+        showToast("Supervisor Mode", "Approval gate unlocked.");
+      }
+    }
+
+    function autoCalcNextInspection() {
+      const inspDateVal = document.getElementById("f_insp_date").value;
+      if (!inspDateVal) return;
+      const d = new Date(inspDateVal);
+      d.setFullYear(d.getFullYear() + 1);
+      d.setDate(d.getDate() - 1);
+      document.getElementById("f_next_insp_date").value = d.toISOString().split("T")[0];
+    }
+
+    function submitTechnician() {
+      currentRecordState = "Submitted";
+      updateStatusBadge();
+      document.getElementById("supervisor-lock-label").textContent = "Ready for Supervisor Approval";
+      showToast("Checklist Submitted", "Queued for supervisor review.");
+      document.getElementById("role-selector").value = "supervisor";
+      toggleRole();
+    }
+
+    function approveSupervisor() {
+      const decision = document.getElementById("f_super_decision").value;
+      if (decision === "Approved") {
+        currentRecordState = "Approved";
+        updateStatusBadge();
+        syncCertificates();
+        showToast("Certificates Authorized", "All 3 B4 certificate pages unlocked.");
+        switchTab('tab-cert1');
+      } else {
+        currentRecordState = "Rejected";
+        updateStatusBadge();
+        showToast("Returned to Tech", "Checklist rejected.");
+      }
+    }
+
+    function updateStatusBadge() {
+      const badge = document.getElementById("badge-status");
+      badge.textContent = currentRecordState;
+      if (currentRecordState === "Approved") badge.className = "px-2.5 py-1 rounded-md text-xs font-bold uppercase bg-emerald-100 text-emerald-800 border";
+      else if (currentRecordState === "Submitted") badge.className = "px-2.5 py-1 rounded-md text-xs font-bold uppercase bg-blue-100 text-blue-800 border";
+      else badge.className = "px-2.5 py-1 rounded-md text-xs font-bold uppercase bg-amber-100 text-amber-800 border";
+    }
+
+    function syncCertificates() {
+      const v = id => {
+        const el = document.getElementById(id);
+        return el ? (el.value || "") : "";
+      };
+      const formatMonth = val => val ? val.split('-')[1] + ' / ' + val.split('-')[0] : "";
+      const formatDate = val => val ? val.split('-').reverse().join(' / ') : "";
+
+      // Page 1
+      document.getElementById("c1_cert_no").textContent = v("f_cert_no");
+      document.getElementById("c1_vessel").textContent = v("f_vessel");
+      document.getElementById("c1_port").textContent = v("f_port");
+      document.getElementById("c1_date_insp").textContent = formatDate(v("f_insp_date"));
+      document.getElementById("c1_next_date").textContent = formatDate(v("f_next_insp_date"));
+      document.getElementById("c1_brand").textContent = v("f_brand");
+      document.getElementById("c1_capacity").textContent = v("f_capacity") ? v("f_capacity") + " PERSONS" : "";
+      document.getElementById("c1_sn").textContent = v("f_sn");
+      document.getElementById("c1_type").textContent = v("f_type");
+      document.getElementById("c1_maker").textContent = v("f_maker");
+      document.getElementById("c1_dom").textContent = v("f_dom");
+      document.getElementById("c1_painter").textContent = v("f_painter_len");
+      document.getElementById("c1_height").textContent = v("f_max_height");
+      document.getElementById("c1_cyl1_no").textContent = v("f_cyl1_no");
+      document.getElementById("c1_cyl1_meas").textContent = v("f_cyl1_measured") ? v("f_cyl1_measured") + " Kg" : "";
+      document.getElementById("c1_cyl2_no").textContent = v("f_cyl2_no");
+      document.getElementById("c1_cyl2_meas").textContent = v("f_cyl2_measured") ? v("f_cyl2_measured") + " Kg" : "";
+      document.getElementById("c1_sign_tech").textContent = v("f_tech_name");
+      document.getElementById("c1_sign_super").textContent = v("f_super_name");
+
+      // Page 2
+      document.getElementById("c2_cert_no").textContent = v("f_cert_no");
+      document.getElementById("c2_vessel").textContent = v("f_vessel");
+      document.getElementById("c2_port").textContent = v("f_port");
+      document.getElementById("c2_brand").textContent = v("f_brand");
+      document.getElementById("c2_maker").textContent = v("f_maker");
+      document.getElementById("c2_date_insp").textContent = formatDate(v("f_insp_date"));
+      document.getElementById("c2_next_date").textContent = formatDate(v("f_next_insp_date"));
+      document.getElementById("c2_cap_sn").textContent = (v("f_capacity") ? v("f_capacity") + " Persons" : "") + (v("f_sn") ? " / " + v("f_sn") : "");
+      document.getElementById("c2_flare").textContent = formatMonth(v("f_exp_flare"));
+      document.getElementById("c2_rocket").textContent = formatMonth(v("f_exp_rocket"));
+      document.getElementById("c2_smoke").textContent = formatMonth(v("f_exp_smoke"));
+      document.getElementById("c2_fak").textContent = formatMonth(v("f_exp_fak"));
+      document.getElementById("c2_bat").textContent = formatMonth(v("f_exp_battery"));
+      document.getElementById("c2_tab").textContent = formatMonth(v("f_exp_tablets"));
+      document.getElementById("c2_sign").textContent = v("f_super_name");
+
+      // Page 3
+      document.getElementById("c3_cert_no").textContent = v("f_cert_no");
+      document.getElementById("c3_vessel").textContent = v("f_vessel");
+      document.getElementById("c3_port").textContent = v("f_port");
+      document.getElementById("c3_brand").textContent = v("f_brand");
+      document.getElementById("c3_maker").textContent = v("f_maker");
+      document.getElementById("c3_date_insp").textContent = formatDate(v("f_insp_date"));
+      document.getElementById("c3_next_date").textContent = formatDate(v("f_next_insp_date"));
+      document.getElementById("c3_cap_sn").textContent = (v("f_capacity") ? v("f_capacity") + " Persons" : "") + (v("f_sn") ? " / " + v("f_sn") : "");
+      document.getElementById("c3_cyl1_no").textContent = v("f_cyl1_no");
+      document.getElementById("c3_cyl1_meas").textContent = v("f_cyl1_measured") ? v("f_cyl1_measured") + " Kg" : "";
+      document.getElementById("c3_cyl2_no").textContent = v("f_cyl2_no");
+      document.getElementById("c3_cyl2_meas").textContent = v("f_cyl2_measured") ? v("f_cyl2_measured") + " Kg" : "";
+      document.getElementById("c3_water").textContent = formatMonth(v("f_exp_water"));
+      document.getElementById("c3_food").textContent = formatMonth(v("f_exp_food"));
+      document.getElementById("c3_sign").textContent = v("f_super_name");
+    }
+
+    function fillSampleData() {
+      document.getElementById("f_vessel").value = "MV BORNEO STAR";
+      document.getElementById("f_cert_no").value = "KLR-2026-114";
+      document.getElementById("f_port").value = "LABUAN";
+      syncCertificates();
+      showToast("Dummy Data Loaded", "Form populated successfully.");
+    }
+
+    function clearForm() {
+      document.getElementById("inspection-form").reset();
+      syncCertificates();
+      showToast("Form Cleared", "Ready for new entry.");
+    }
+
+    function showToast(title, msg) {
+      const modal = document.getElementById("toast-modal");
+      document.getElementById("toast-title").textContent = title;
+      document.getElementById("toast-body").textContent = msg;
+      modal.classList.remove("translate-y-24", "opacity-0", "pointer-events-none");
+      setTimeout(() => {
+        modal.classList.add("translate-y-24", "opacity-0", "pointer-events-none");
+      }, 3500);
+    }
+
+    window.onload = function() {
+      syncCertificates();
+      toggleRole();
+    };
+  </script>
+</body>
+</html>
