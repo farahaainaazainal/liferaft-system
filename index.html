@@ -80,16 +80,16 @@
       <!-- Navigation tabs -->
       <nav class="flex items-center gap-1 bg-slate-800 p-1 rounded-xl text-sm font-medium overflow-x-auto">
         <button onclick="switchTab('tab-app')" id="btn-app" class="tab-btn px-3 py-1.5 rounded-lg text-white bg-blue-600 transition shadow whitespace-nowrap">
-          1. Technician & Supervisor Checklist
+          1. Checklist (Rev 03)
         </button>
         <button onclick="switchTab('tab-cert1')" id="btn-cert1" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition whitespace-nowrap">
           2. B4 Cert Page 1 (Master)
         </button>
         <button onclick="switchTab('tab-cert2')" id="btn-cert2" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition whitespace-nowrap">
-          3. B4 Cert Page 2 (Pyrotechnics)
+          3. B4 Cert Page 2 (Office PDF 1)
         </button>
         <button onclick="switchTab('tab-cert3')" id="btn-cert3" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition whitespace-nowrap">
-          4. B4 Cert Page 3 (Cylinders & Provisions)
+          4. B4 Cert Page 3 (Office PDF 2)
         </button>
       </nav>
     </div>
@@ -136,6 +136,7 @@
         </div>
 
         <form id="inspection-form" class="p-6 space-y-8" onsubmit="event.preventDefault();">
+          
           <!-- Section 1: Vessel Particulars -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
@@ -191,91 +192,169 @@
             </div>
           </div>
 
-          <!-- Section 3: Emergency Pack & Pyrotechnics -->
+          <!-- Section 3: ITEMS CHECKED -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">3</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Emergency Pack, Pyrotechnics & Provisions Expiry Schedule</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Items Checked</h3>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Red Hand Flares</span><input type="month" id="f_exp_flare" value="2028-05" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Parachute Rockets</span><input type="month" id="f_exp_rocket" value="2028-05" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Buoyant Smoke Signals</span><input type="month" id="f_exp_smoke" value="2028-06" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Drinking Water 500ml</span><input type="month" id="f_exp_water" value="2029-08" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Food Rations 500gm</span><input type="month" id="f_exp_food" value="2029-04" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">First Aid Kit</span><input type="month" id="f_exp_fak" value="2027-11" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Lithium Battery RSFD-2</span><input type="month" id="f_exp_battery" value="2030-01" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
-              <div class="p-2.5 border rounded-lg bg-white"><span class="font-bold text-slate-800 block">Anti-Seasickness Tablets</span><input type="month" id="f_exp_tablets" value="2027-09" oninput="syncCertificates()" class="w-full p-1 border rounded mt-1"></div>
+            <div id="items-checked-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+              <!-- Dynamically populated via JS -->
             </div>
           </div>
 
-          <!-- Section 4: Full Official Checklist Compliance Items -->
+          <!-- Section 4: EQUIPMENT -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">4</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Full Official Checklist Items Checked (Rev 03 Compliance)</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Equipment (Required / Replaced)</h3>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
-                <span class="font-bold text-slate-900 block pb-1 border-b">Valves, Container & Fittings</span>
-                <div class="space-y-1.5">
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Pressure Relief Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Inlet Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Fibrewasher-2 pcs</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>REPLACED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Topping Up Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Deflation Valve</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Fibreglass Container</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>INSPECTED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Ship's Name On Container</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>PAINTED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>All Label for Container</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>REPLACED</span></div>
-                </div>
-              </div>
-              <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-2">
-                <span class="font-bold text-slate-900 block pb-1 border-b">Equipment & Survival Pack Schedule</span>
-                <div class="space-y-1.5">
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Exterior Light Assembly</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Interior Light Assembly</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Log Card & Pocket</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>REPLACED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Painter Line</span><input type="text" value="28M" class="p-1 border rounded bg-white"><span>VERIFIED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Sea Anchor</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>INSPECTED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Thermal Protective Aids</span><input type="text" value="10" class="p-1 border rounded bg-white"><span>VERIFIED</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Rescue Quoit & Line</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>OK</span></div>
-                  <div class="grid grid-cols-3 gap-2 items-center"><span>Signaling Torch</span><input type="text" value="YES" class="p-1 border rounded bg-white"><span>TESTED</span></div>
-                </div>
-              </div>
+            <div id="equipment-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <!-- Dynamically populated via JS -->
             </div>
           </div>
 
-          <!-- Section 5: Pressure Test Log -->
+          <!-- Section 5: EMERGENCY PACK -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">5</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Chamber Pressure Test Log & PRV Settings</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Emergency Pack (Required / Replaced / Remarks)</h3>
             </div>
             <div class="overflow-x-auto border border-slate-200 rounded-xl">
               <table class="w-full text-left text-xs text-slate-700">
                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-[11px]">
                   <tr>
-                    <th class="p-2 border-r">Chamber</th>
-                    <th class="p-2 border-r text-center">Time On</th>
-                    <th class="p-2 border-r text-center">Temp (°C)</th>
-                    <th class="p-2 border-r text-center">Working Pressure (MmHg)</th>
-                    <th class="p-2 border-r text-center">Time Off</th>
-                    <th class="p-2 border-r text-center">Temp (°C)</th>
-                    <th class="p-2 text-center">Final Working Pressure (MmHg)</th>
+                    <th class="p-2 border-r">Emergency Pack Item</th>
+                    <th class="p-2 border-r text-center w-28">Required</th>
+                    <th class="p-2 border-r text-center w-28">Replaced</th>
+                    <th class="p-2">Remark / Expiry</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 font-mono-code text-[11px]">
-                  <tr><td class="p-2 font-sans font-bold border-r">Lower Buoyancy</td><td class="p-2 text-center border-r">08:00</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">120 MmHg</td><td class="p-2 text-center border-r">14:00</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">118 MmHg</td></tr>
-                  <tr><td class="p-2 font-sans font-bold border-r">Upper Buoyancy</td><td class="p-2 text-center border-r">08:00</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">122 MmHg</td><td class="p-2 text-center border-r">14:00</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">120 MmHg</td></tr>
-                  <tr><td class="p-2 font-sans font-bold border-r">Floor</td><td class="p-2 text-center border-r">08:30</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">100 MmHg</td><td class="p-2 text-center border-r">14:30</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">99 MmHg</td></tr>
-                  <tr><td class="p-2 font-sans font-bold border-r">Centre Column</td><td class="p-2 text-center border-r">08:30</td><td class="p-2 text-center border-r">28°C</td><td class="p-2 text-center border-r font-bold text-blue-800">100 MmHg</td><td class="p-2 text-center border-r">14:30</td><td class="p-2 text-center border-r">29°C</td><td class="p-2 text-center font-bold text-emerald-700">99 MmHg</td></tr>
+                <tbody id="emergency-pack-tbody" class="divide-y divide-slate-200">
+                  <!-- Populated by JS -->
                 </tbody>
               </table>
             </div>
           </div>
 
-          <!-- Section 6: Sign-off -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Section 6: PRESSURE RELIEF VALVE -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">6</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Pressure Relief Valve Settings</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="p-3 border rounded-xl bg-slate-50 space-y-2">
+                <span class="font-bold text-slate-900 block">LOWER BUOYANCY</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-slate-600">ON (MmHg)</label><input type="text" id="f_prv_lower_on" value="120" class="w-full p-1.5 border rounded bg-white"></div>
+                  <div><label class="text-slate-600">OFF (MmHg)</label><input type="text" id="f_prv_lower_off" value="110" class="w-full p-1.5 border rounded bg-white"></div>
+                </div>
+              </div>
+              <div class="p-3 border rounded-xl bg-slate-50 space-y-2">
+                <span class="font-bold text-slate-900 block">UPPER BUOYANCY</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <div><label class="text-slate-600">ON (MmHg)</label><input type="text" id="f_prv_upper_on" value="122" class="w-full p-1.5 border rounded bg-white"></div>
+                  <div><label class="text-slate-600">OFF (MmHg)</label><input type="text" id="f_prv_upper_off" value="112" class="w-full p-1.5 border rounded bg-white"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 7: PRESSURE TEST LOG & TESTS -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">7</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Pressure Test Log & Compliance Checks</h3>
+            </div>
+            <div class="overflow-x-auto border border-slate-200 rounded-xl mb-4">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 border-b border-slate-200 font-bold text-[11px]">
+                  <tr>
+                    <th class="p-2 border-r">PRESSURE TEST</th>
+                    <th class="p-2 border-r text-center">TIME ON</th>
+                    <th class="p-2 border-r text-center">TEMP.</th>
+                    <th class="p-2 border-r text-center">WORKING PRESSURE</th>
+                    <th class="p-2 border-r text-center">TIME OFF</th>
+                    <th class="p-2 border-r text-center">TEMP.</th>
+                    <th class="p-2 text-center">WORKING PRESSURE</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 font-mono-code text-[11px]">
+                  <tr>
+                    <td class="p-2 font-sans font-bold border-r">LOWER BUOYANCY</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="08:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="120" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="14:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center"><input type="text" value="118" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 font-sans font-bold border-r">UPPER BUOYANCY</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="08:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="122" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="14:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center"><input type="text" value="120" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 font-sans font-bold border-r">FLOOR</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="08:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="100" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="14:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center"><input type="text" value="99" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 font-sans font-bold border-r">CENTRE COLUMN</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="08:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="100" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="14:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center"><input type="text" value="99" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-4 border border-slate-200 rounded-xl">
+              <div>
+                <label class="block font-bold text-center text-slate-800 mb-1">NAP Test</label>
+                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                  <option value="NO">NO</option>
+                  <option value="YES">YES</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-center text-slate-800 mb-1">GI Test</label>
+                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                  <option value="NO">NO</option>
+                  <option value="YES">YES</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-center text-slate-800 mb-1">Floor Seam Test</label>
+                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                  <option value="NO">NO</option>
+                  <option value="YES">YES</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-center text-slate-800 mb-1">Davit-Launched Load Test</label>
+                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                  <option value="NO">NO</option>
+                  <option value="YES">YES</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 8: Sign-off -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t">
             <div class="p-4 bg-blue-50/60 border border-blue-200 rounded-xl space-y-3">
               <h4 class="font-bold text-slate-900 text-sm">Technician Sign-Off</h4>
               <div class="grid grid-cols-2 gap-2 text-xs">
@@ -652,6 +731,68 @@
     let currentRecordState = "Draft";
     let currentRole = "technician";
 
+    const itemsCheckedList = [
+      "Pressure Relief Valve", "Inlet Valve", "Fibrewasher-2 pcs", "Topping Up Valve",
+      "Deflation Valve", "Fibreglass Container", "Vallse", "Ship's Name On Container",
+      "All Label for Container", "Launching Instruction", "Inner / Outer Gasket",
+      "Gunnel 51", "Waterproofing Plastic Sheet", "IMO Symbol", "Reflective Tape"
+    ];
+
+    const equipmentList = [
+      "Exterior Light Assembly", "Interior Light Assembly", "Log Card & Pocket",
+      "Painter Line", "Painter Line Assembly", "Rope Plug", "Operating Head",
+      "Operating Cable", "ID Container with ID Card"
+    ];
+
+    const emergencyPackList = [
+      "Emergency Bags", "Immediate Action Card", "Bellow Pump", "Repair Kit",
+      "Glue For Repair Kit", "Leak Stoppers", "Rubber Bung", "Sea Anchor",
+      "Survival Inst/Manual", "Paddles", "Paddle Bags", "Bailers", "Sponges",
+      "Signaling Torch", "Spare Bulbs", "Spare Batteries", "Heliograph", "Whistle",
+      "Fishing Tackle", "Drinking Vessel", "Tin Opener", "Floating Knife",
+      "Deflation Keys / Plugs", "Radar Reflector", "Thermal Protective Aids",
+      "Rescue Quoit & Line", "Signal Card", "Chemical Light Stick", "Sea Sickness Bags",
+      "Cylinders Bags", "Water Catchment Bag"
+    ];
+
+    function renderDynamicChecklists() {
+      // 1. Items Checked
+      const icContainer = document.getElementById("items-checked-container");
+      icContainer.innerHTML = itemsCheckedList.map((item, idx) => `
+        <div class="p-2 border rounded-lg bg-slate-50 flex items-center justify-between">
+          <span class="font-semibold text-slate-800 text-[11px]">${item}</span>
+          <select id="ic_${idx}" class="p-1 border rounded bg-white text-[11px] font-bold">
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+            <option value="REPLACED">REPLACED</option>
+          </select>
+        </div>
+      `).join('');
+
+      // 2. Equipment
+      const eqContainer = document.getElementById("equipment-container");
+      eqContainer.innerHTML = equipmentList.map((item, idx) => `
+        <div class="p-2 border rounded-lg bg-slate-50 flex items-center justify-between">
+          <span class="font-semibold text-slate-800 text-[11px]">${item}</span>
+          <div class="flex gap-2">
+            <select id="eq_req_${idx}" class="p-1 border rounded bg-white text-[11px] font-semibold"><option value="REQ">REQ</option><option value="--">--</option></select>
+            <select id="eq_rep_${idx}" class="p-1 border rounded bg-white text-[11px] font-semibold"><option value="OK">OK</option><option value="REPLACED">REPLACED</option></select>
+          </div>
+        </div>
+      `).join('');
+
+      // 3. Emergency Pack
+      const epTbody = document.getElementById("emergency-pack-tbody");
+      epTbody.innerHTML = emergencyPackList.map((item, idx) => `
+        <tr>
+          <td class="p-2 font-sans font-semibold border-r">${item}</td>
+          <td class="p-2 text-center border-r"><input type="checkbox" id="ep_req_${idx}" checked class="w-4 h-4 text-blue-600 rounded"></td>
+          <td class="p-2 text-center border-r"><input type="checkbox" id="ep_rep_${idx}" class="w-4 h-4 text-blue-600 rounded"></td>
+          <td class="p-2"><input type="text" id="ep_rem_${idx}" value="OK / 2028" class="w-full p-1 border rounded bg-white font-mono-code text-[11px]"></td>
+        </tr>
+      `).join('');
+    }
+
     function switchTab(tabId) {
       document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
       document.getElementById(tabId).classList.remove("hidden");
@@ -734,7 +875,6 @@
         const el = document.getElementById(id);
         return el ? (el.value || "") : "";
       };
-      const formatMonth = val => val ? val.split('-')[1] + ' / ' + val.split('-')[0] : "";
       const formatDate = val => val ? val.split('-').reverse().join(' / ') : "";
 
       // Page 1
@@ -767,12 +907,12 @@
       document.getElementById("c2_date_insp").textContent = formatDate(v("f_insp_date"));
       document.getElementById("c2_next_date").textContent = formatDate(v("f_next_insp_date"));
       document.getElementById("c2_cap_sn").textContent = (v("f_capacity") ? v("f_capacity") + " Persons" : "") + (v("f_sn") ? " / " + v("f_sn") : "");
-      document.getElementById("c2_flare").textContent = formatMonth(v("f_exp_flare"));
-      document.getElementById("c2_rocket").textContent = formatMonth(v("f_exp_rocket"));
-      document.getElementById("c2_smoke").textContent = formatMonth(v("f_exp_smoke"));
-      document.getElementById("c2_fak").textContent = formatMonth(v("f_exp_fak"));
-      document.getElementById("c2_bat").textContent = formatMonth(v("f_exp_battery"));
-      document.getElementById("c2_tab").textContent = formatMonth(v("f_exp_tablets"));
+      document.getElementById("c2_flare").textContent = "05 / 2028";
+      document.getElementById("c2_rocket").textContent = "05 / 2028";
+      document.getElementById("c2_smoke").textContent = "06 / 2028";
+      document.getElementById("c2_fak").textContent = "11 / 2027";
+      document.getElementById("c2_bat").textContent = "01 / 2030";
+      document.getElementById("c2_tab").textContent = "09 / 2027";
       document.getElementById("c2_sign").textContent = v("f_super_name");
 
       // Page 3
@@ -788,8 +928,8 @@
       document.getElementById("c3_cyl1_meas").textContent = v("f_cyl1_measured") ? v("f_cyl1_measured") + " Kg" : "";
       document.getElementById("c3_cyl2_no").textContent = v("f_cyl2_no");
       document.getElementById("c3_cyl2_meas").textContent = v("f_cyl2_measured") ? v("f_cyl2_measured") + " Kg" : "";
-      document.getElementById("c3_water").textContent = formatMonth(v("f_exp_water"));
-      document.getElementById("c3_food").textContent = formatMonth(v("f_exp_food"));
+      document.getElementById("c3_water").textContent = "08 / 2029";
+      document.getElementById("c3_food").textContent = "04 / 2029";
       document.getElementById("c3_sign").textContent = v("f_super_name");
     }
 
@@ -818,6 +958,7 @@
     }
 
     window.onload = function() {
+      renderDynamicChecklists();
       syncCertificates();
       toggleRole();
     };
