@@ -14,10 +14,14 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Strict B4 Print Styles (250mm x 353mm per page) */
+    /* Strict B4 Print Styles (250mm x 353mm per page) with Arial Font */
     @page {
       size: 250mm 353mm;
       margin: 6mm;
+    }
+    .b4-certificate-page {
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 8px !important;
     }
     @media print {
       body * {
@@ -97,7 +101,6 @@
 
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
     
-    <!-- Checklist Tab -->
     <div id="tab-app" class="tab-content space-y-6">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm">
         <div class="flex items-center gap-2">
@@ -137,7 +140,6 @@
 
         <form id="inspection-form" class="p-6 space-y-8" onsubmit="event.preventDefault();">
           
-          <!-- Section 1: Vessel Particulars -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">1</span>
@@ -160,74 +162,104 @@
             </div>
           </div>
 
-          <!-- Section 2: Cylinders -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
-              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">2</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Gas Cylinder Records (Cylinder No. 1 & No. 2)</h3>
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">CYL</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">CYLINDER Nos. : Records (Cylinder No. 1 & No. 2)</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 text-xs space-y-3">
                 <span class="font-bold text-slate-800 text-sm block border-b pb-1">Cylinder #1</span>
                 <div class="grid grid-cols-2 gap-2">
                   <div><label class="text-slate-600">Serial No.</label><input type="text" id="f_cyl1_no" value="CYL-A-9901" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">Hydro Test</label><input type="text" id="f_cyl1_hyd" value="09 / 2024" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">Tare (Kg)</label><input type="number" step="0.01" id="f_cyl1_tare" value="14.20" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">CO₂ (Kg)</label><input type="number" step="0.01" id="f_cyl1_co2" value="4.50" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">N₂ (Kg)</label><input type="number" step="0.01" id="f_cyl1_n2" value="0.30" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">Measured (Kg)</label><input type="number" step="0.01" id="f_cyl1_measured" value="18.95" oninput="syncCertificates()" class="w-full p-1.5 border border-blue-400 bg-blue-50 font-bold rounded"></div>
+                  <div><label class="text-slate-600">Tare Weight (Kg)</label><input type="number" step="0.01" id="f_cyl1_tare" value="14.20" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Co-2 Weight (Kg)</label><input type="number" step="0.01" id="f_cyl1_co2" value="4.50" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">N-2 Weight (Kg)</label><input type="number" step="0.01" id="f_cyl1_n2" value="0.30" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Full Weight (Kg)</label><input type="number" step="0.01" id="f_cyl1_full" value="19.00" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Measure Weight (Kg)</label><input type="number" step="0.01" id="f_cyl1_measured" value="18.95" oninput="syncCertificates()" class="w-full p-1.5 border border-blue-400 bg-blue-50 font-bold rounded"></div>
+                  <div><label class="text-slate-600">Lead seal</label><input type="text" id="f_cyl1_seal" value="INTACT" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Leakage Test</label><input type="text" id="f_cyl1_leak" value="PASSED" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Hydro Test</label><input type="text" id="f_cyl1_hyd" value="PASSED" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">CO-2 Charged</label><input type="text" id="f_cyl1_co2c" value="YES" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">N-2 Charged</label><input type="text" id="f_cyl1_n2c" value="YES" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">LAST HYD TEST</label><input type="text" id="f_cyl1_last" value="09 / 2024" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
                 </div>
               </div>
               <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 text-xs space-y-3">
                 <span class="font-bold text-slate-800 text-sm block border-b pb-1">Cylinder #2</span>
                 <div class="grid grid-cols-2 gap-2">
                   <div><label class="text-slate-600">Serial No.</label><input type="text" id="f_cyl2_no" value="CYL-B-9902" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">Hydro Test</label><input type="text" id="f_cyl2_hyd" value="09 / 2024" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">Tare (Kg)</label><input type="number" step="0.01" id="f_cyl2_tare" value="14.20" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">CO₂ (Kg)</label><input type="number" step="0.01" id="f_cyl2_co2" value="4.50" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">N₂ (Kg)</label><input type="number" step="0.01" id="f_cyl2_n2" value="0.30" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
-                  <div><label class="text-slate-600">Measured (Kg)</label><input type="number" step="0.01" id="f_cyl2_measured" value="18.98" oninput="syncCertificates()" class="w-full p-1.5 border border-blue-400 bg-blue-50 font-bold rounded"></div>
+                  <div><label class="text-slate-600">Tare Weight (Kg)</label><input type="number" step="0.01" id="f_cyl2_tare" value="14.20" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Co-2 Weight (Kg)</label><input type="number" step="0.01" id="f_cyl2_co2" value="4.50" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">N-2 Weight (Kg)</label><input type="number" step="0.01" id="f_cyl2_n2" value="0.30" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Full Weight (Kg)</label><input type="number" step="0.01" id="f_cyl2_full" value="19.00" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Measure Weight (Kg)</label><input type="number" step="0.01" id="f_cyl2_measured" value="18.98" oninput="syncCertificates()" class="w-full p-1.5 border border-blue-400 bg-blue-50 font-bold rounded"></div>
+                  <div><label class="text-slate-600">Lead seal</label><input type="text" id="f_cyl2_seal" value="INTACT" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Leakage Test</label><input type="text" id="f_cyl2_leak" value="PASSED" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">Hydro Test</label><input type="text" id="f_cyl2_hyd" value="PASSED" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">CO-2 Charged</label><input type="text" id="f_cyl2_co2c" value="YES" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">N-2 Charged</label><input type="text" id="f_cyl2_n2c" value="YES" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
+                  <div><label class="text-slate-600">LAST HYD TEST</label><input type="text" id="f_cyl2_last" value="09 / 2024" oninput="syncCertificates()" class="w-full p-1.5 border rounded"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Section 3: ITEMS CHECKED -->
+          <div>
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">EMERGENCY PACK (REQUIRED / REPLACED / EXP.DATE)</h3>
+            </div>
+            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+              <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-100 border-b border-slate-200 font-bold text-[11px]">
+                  <tr>
+                    <th class="p-2 border-r">EMERGENCY PACK</th>
+                    <th class="p-2 border-r text-center w-32">REQUIRED</th>
+                    <th class="p-2 border-r text-center w-32">REPLACED</th>
+                    <th class="p-2 w-48">EXP.DATE</th>
+                  </tr>
+                </thead>
+                <tbody id="sec2-pack-tbody" class="divide-y divide-slate-200">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">3</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Items Checked</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">ITEMS CHECKED</h3>
             </div>
             <div id="items-checked-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
               <!-- Dynamically populated via JS -->
             </div>
           </div>
 
-          <!-- Section 4: EQUIPMENT -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">4</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Equipment (Required / Replaced)</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">EQUIPMENT</h3>
             </div>
             <div id="equipment-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               <!-- Dynamically populated via JS -->
             </div>
           </div>
 
-          <!-- Section 5: EMERGENCY PACK -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">5</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Emergency Pack (Required / Replaced / Remarks)</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">EMERGENCY PACK</h3>
             </div>
             <div class="overflow-x-auto border border-slate-200 rounded-xl">
               <table class="w-full text-left text-xs text-slate-700">
                 <thead class="bg-slate-100 border-b border-slate-200 font-bold text-[11px]">
                   <tr>
-                    <th class="p-2 border-r">Emergency Pack Item</th>
-                    <th class="p-2 border-r text-center w-28">Required</th>
-                    <th class="p-2 border-r text-center w-28">Replaced</th>
-                    <th class="p-2">Remark / Expiry</th>
+                    <th class="p-2 border-r">EMERGENCY PACK</th>
+                    <th class="p-2 border-r text-center w-32">REQUIRED</th>
+                    <th class="p-2 border-r text-center w-32">REPLACED</th>
+                    <th class="p-2">REMARK</th>
                   </tr>
                 </thead>
                 <tbody id="emergency-pack-tbody" class="divide-y divide-slate-200">
@@ -237,35 +269,33 @@
             </div>
           </div>
 
-          <!-- Section 6: PRESSURE RELIEF VALVE -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">6</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Pressure Relief Valve Settings</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">PRESSURE RELIEF VALVE</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div class="p-3 border rounded-xl bg-slate-50 space-y-2">
                 <span class="font-bold text-slate-900 block">LOWER BUOYANCY</span>
                 <div class="grid grid-cols-2 gap-2">
-                  <div><label class="text-slate-600">ON (MmHg)</label><input type="text" id="f_prv_lower_on" value="120" class="w-full p-1.5 border rounded bg-white"></div>
-                  <div><label class="text-slate-600">OFF (MmHg)</label><input type="text" id="f_prv_lower_off" value="110" class="w-full p-1.5 border rounded bg-white"></div>
+                  <div><label class="text-slate-600">ON (MmHg)</label><input type="text" id="f_prv_lower_on" value="120" oninput="syncCertificates()" class="w-full p-1.5 border rounded bg-white"></div>
+                  <div><label class="text-slate-600">OFF (MmHg)</label><input type="text" id="f_prv_lower_off" value="110" oninput="syncCertificates()" class="w-full p-1.5 border rounded bg-white"></div>
                 </div>
               </div>
               <div class="p-3 border rounded-xl bg-slate-50 space-y-2">
                 <span class="font-bold text-slate-900 block">UPPER BUOYANCY</span>
                 <div class="grid grid-cols-2 gap-2">
-                  <div><label class="text-slate-600">ON (MmHg)</label><input type="text" id="f_prv_upper_on" value="122" class="w-full p-1.5 border rounded bg-white"></div>
-                  <div><label class="text-slate-600">OFF (MmHg)</label><input type="text" id="f_prv_upper_off" value="112" class="w-full p-1.5 border rounded bg-white"></div>
+                  <div><label class="text-slate-600">ON (MmHg)</label><input type="text" id="f_prv_upper_on" value="122" oninput="syncCertificates()" class="w-full p-1.5 border rounded bg-white"></div>
+                  <div><label class="text-slate-600">OFF (MmHg)</label><input type="text" id="f_prv_upper_off" value="112" oninput="syncCertificates()" class="w-full p-1.5 border rounded bg-white"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Section 7: PRESSURE TEST LOG & TESTS -->
           <div>
             <div class="flex items-center gap-2 border-b border-slate-200 pb-2 mb-4">
               <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">7</span>
-              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Pressure Test Log & Compliance Checks</h3>
+              <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">Pressure Test & Compliance Checks</h3>
             </div>
             <div class="overflow-x-auto border border-slate-200 rounded-xl mb-4">
               <table class="w-full text-left text-xs text-slate-700">
@@ -283,69 +313,69 @@
                 <tbody class="divide-y divide-slate-200 font-mono-code text-[11px]">
                   <tr>
                     <td class="p-2 font-sans font-bold border-r">LOWER BUOYANCY</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="08:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="0" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="27" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="120" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="6" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
                     <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="120" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="14:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center"><input type="text" value="118" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center"><input type="text" value="112" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
                   </tr>
                   <tr>
                     <td class="p-2 font-sans font-bold border-r">UPPER BUOYANCY</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="08:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="0" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="27" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="122" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="6" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
                     <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="122" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="14:00" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center"><input type="text" value="120" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center"><input type="text" value="112" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
                   </tr>
                   <tr>
                     <td class="p-2 font-sans font-bold border-r">FLOOR</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="08:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="0" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="27" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="100" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="6" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
                     <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="100" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="14:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center"><input type="text" value="99" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center"><input type="text" value="95" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
                   </tr>
                   <tr>
                     <td class="p-2 font-sans font-bold border-r">CENTRE COLUMN</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="08:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="0" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="27" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="100" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center border-r"><input type="text" value="6" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
                     <td class="p-2 text-center border-r"><input type="text" value="28" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="100" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="14:30" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> Hours</td>
-                    <td class="p-2 text-center border-r"><input type="text" value="29" class="w-12 text-center p-1 border rounded bg-white font-mono-code"> C</td>
-                    <td class="p-2 text-center"><input type="text" value="99" class="w-20 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
+                    <td class="p-2 text-center"><input type="text" value="95" class="w-16 text-center p-1 border rounded bg-white font-mono-code"> MmHg</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-4 border border-slate-200 rounded-xl">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-4 border border-slate-200 rounded-xl">
               <div>
                 <label class="block font-bold text-center text-slate-800 mb-1">NAP Test</label>
-                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                <select id="f_nap_test" onchange="syncCertificates()" class="w-full p-2 border rounded bg-white font-bold text-center">
                   <option value="NO">NO</option>
                   <option value="YES">YES</option>
                 </select>
               </div>
               <div>
                 <label class="block font-bold text-center text-slate-800 mb-1">GI Test</label>
-                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                <select id="f_gi_test" onchange="syncCertificates()" class="w-full p-2 border rounded bg-white font-bold text-center">
                   <option value="NO">NO</option>
                   <option value="YES">YES</option>
                 </select>
               </div>
               <div>
                 <label class="block font-bold text-center text-slate-800 mb-1">Floor Seam Test</label>
-                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                <select id="f_floor_test" onchange="syncCertificates()" class="w-full p-2 border rounded bg-white font-bold text-center">
                   <option value="NO">NO</option>
                   <option value="YES">YES</option>
                 </select>
               </div>
               <div>
                 <label class="block font-bold text-center text-slate-800 mb-1">Davit-Launched Load Test</label>
-                <select class="w-full p-2 border rounded bg-white font-bold text-center">
+                <select id="f_davit_test" onchange="syncCertificates()" class="w-full p-2 border rounded bg-white font-bold text-center">
                   <option value="NO">NO</option>
                   <option value="YES">YES</option>
                 </select>
@@ -353,10 +383,9 @@
             </div>
           </div>
 
-          <!-- Section 8: Sign-off -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t">
             <div class="p-4 bg-blue-50/60 border border-blue-200 rounded-xl space-y-3">
-              <h4 class="font-bold text-slate-900 text-sm">Technician Sign-Off</h4>
+              <h4 class="font-bold text-slate-900 text-sm">Technician Submission</h4>
               <div class="grid grid-cols-2 gap-2 text-xs">
                 <div><label class="font-semibold">Technician Name *</label><input type="text" id="f_tech_name" value="MOHD AZLAN BIN ISMAIL" oninput="syncCertificates()" class="w-full p-2 border rounded bg-white mt-1"></div>
                 <div><label class="font-semibold">Tech ID</label><input type="text" id="f_tech_id" value="TECH-KLR-042" class="w-full p-2 border rounded bg-white mt-1"></div>
@@ -394,12 +423,11 @@
       </div>
     </div>
 
-    <!-- B4 Certificate Page 1 (Master) -->
     <div id="tab-cert1" class="tab-content hidden space-y-6">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4 no-print">
         <div>
           <h2 class="text-lg font-bold text-slate-900">Certificate Page 1: Master Checklist & Compliance Record</h2>
-          <p class="text-xs text-slate-500">Official B4 format ($250 \times 353\text{ mm}$). Reflects exact checklist data with authorized signatories.</p>
+          <p class="text-xs text-slate-500">Official B4 format (250mm x 353mm) with 8pt Arial font throughout.</p>
         </div>
         <button onclick="window.print()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition flex items-center gap-2">
           Print All 3 B4 Certificate Pages
@@ -407,79 +435,193 @@
       </div>
 
       <div class="flex justify-center p-2 sm:p-6 bg-slate-200 rounded-2xl overflow-x-auto">
-        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 font-sans border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-size: 8.5px;">
+        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-family: Arial, Helvetica, sans-serif; font-size: 8px;">
           <div>
-            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+            <!-- Header Block -->
+            <div class="border-2 border-slate-900 p-1.5 grid grid-cols-12 gap-1 mb-1" style="font-size: 8px;">
               <div class="col-span-7 space-y-0.5">
-                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-mono-code font-bold uppercase ml-1" id="c1_vessel"></span></div>
-                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="font-mono-code uppercase ml-1" id="c1_port"></span></div>
+                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-bold uppercase ml-1" id="c1_vessel"></span></div>
+                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="uppercase ml-1" id="c1_port"></span></div>
               </div>
               <div class="col-span-5 space-y-0.5 border-l border-slate-900 pl-2">
-                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-mono-code font-bold text-red-600" id="c1_cert_no"></span></div>
-                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-mono-code font-bold" id="c1_date_insp"></span></div>
-                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-mono-code font-bold text-red-600" id="c1_next_date"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-bold text-red-600" id="c1_cert_no"></span></div>
+                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-bold" id="c1_date_insp"></span></div>
+                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-bold text-red-600" id="c1_next_date"></span></div>
               </div>
             </div>
 
-            <div class="mt-1 border-x-2 border-b-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
-              <div class="col-span-6 flex"><span class="w-20 font-bold">BRAND</span>: <span class="font-mono-code ml-1" id="c1_brand"></span></div>
-              <div class="col-span-6 flex"><span class="w-24 font-bold">CAPACITY</span>: <span class="font-mono-code ml-1" id="c1_capacity"></span></div>
-              <div class="col-span-6 flex"><span class="w-20 font-bold">MAKER</span>: <span class="font-mono-code ml-1" id="c1_maker"></span></div>
-              <div class="col-span-6 flex"><span class="w-24 font-bold">S/N</span>: <span class="font-mono-code font-bold ml-1" id="c1_sn"></span></div>
-              <div class="col-span-6 flex"><span class="w-20 font-bold">TYPE</span>: <span class="font-mono-code ml-1" id="c1_type"></span></div>
-              <div class="col-span-6 flex"><span class="w-24 font-bold">DOM</span>: <span class="font-mono-code ml-1" id="c1_dom"></span></div>
-              <div class="col-span-6 flex"><span class="w-32 font-bold">Length of Painter Line</span>: <span class="font-mono-code ml-1" id="c1_painter"></span> Meters</div>
-              <div class="col-span-6 flex"><span class="w-32 font-bold">Max. Storage Height</span>: <span class="font-mono-code ml-1" id="c1_height"></span> Meters</div>
+            <!-- Particulars Grid -->
+            <div class="border-x-2 border-b-2 border-slate-900 p-1.5 grid grid-cols-12 gap-1 mb-2 bg-slate-50" style="font-size: 8px;">
+              <div class="col-span-6 flex"><span class="w-20 font-bold">BRAND</span>: <span class="ml-1" id="c1_brand"></span></div>
+              <div class="col-span-6 flex"><span class="w-24 font-bold">CAPACITY</span>: <span class="ml-1" id="c1_capacity"></span></div>
+              <div class="col-span-6 flex"><span class="w-20 font-bold">MAKER</span>: <span class="ml-1" id="c1_maker"></span></div>
+              <div class="col-span-6 flex"><span class="w-24 font-bold">S/N</span>: <span class="font-bold ml-1" id="c1_sn"></span></div>
+              <div class="col-span-6 flex"><span class="w-20 font-bold">TYPE</span>: <span class="ml-1" id="c1_type"></span></div>
+              <div class="col-span-6 flex"><span class="w-24 font-bold">DOM</span>: <span class="ml-1" id="c1_dom"></span></div>
+              <div class="col-span-6 flex"><span class="w-32 font-bold">Length of Painter Line</span>: <span class="ml-1" id="c1_painter"></span> Meters</div>
+              <div class="col-span-6 flex"><span class="w-32 font-bold">Max. Storage Height</span>: <span class="ml-1" id="c1_height"></span> Meters</div>
             </div>
 
-            <div class="mt-1.5 grid grid-cols-2 gap-1.5">
-              <div class="border border-slate-900 p-1.5">
-                <div class="bg-slate-900 text-white font-bold p-0.5 text-center text-[8px] uppercase">CYLINDER SUMMARY</div>
-                <div class="p-1 space-y-1 font-mono-code text-[8.5px]">
-                  <div class="flex justify-between border-b pb-0.5"><span>Cyl #1 Serial:</span><strong id="c1_cyl1_no"></strong></div>
-                  <div class="flex justify-between border-b pb-0.5"><span>Cyl #1 Measured Wt:</span><strong id="c1_cyl1_meas"></strong></div>
-                  <div class="flex justify-between border-b pb-0.5"><span>Cyl #2 Serial:</span><strong id="c1_cyl2_no"></strong></div>
-                  <div class="flex justify-between"><span>Cyl #2 Measured Wt:</span><strong id="c1_cyl2_meas"></strong></div>
+            <!-- Dual Column Body -->
+            <div class="grid grid-cols-2 gap-2" style="font-size: 8px;">
+              
+              <!-- LEFT COLUMN: CYLINDER NOS -> ITEMS CHECKED -> EQUIPMENT -> PRV -->
+              <div class="space-y-1.5">
+                <!-- Cylinder Nos Table matching exact layout -->
+                <div class="border border-slate-900 p-1">
+                  <div class="font-bold px-1 underline mb-1" style="font-size: 8px;">CYLINDER Nos. :</div>
+                  <table class="w-full" style="font-size: 8px;">
+                    <tr><td class="py-0.5">Tare Weight</td><td class="text-right font-bold" id="c1_cyl1_tare"></td><td class="text-right font-bold pl-2" id="c1_cyl2_tare"></td><td class="text-right text-slate-500">Kg</td></tr>
+                    <tr><td class="py-0.5">Co-2 Weight</td><td class="text-right font-bold" id="c1_cyl1_co2"></td><td class="text-right font-bold pl-2" id="c1_cyl2_co2"></td><td class="text-right text-slate-500">Kg</td></tr>
+                    <tr><td class="py-0.5">N-2 Weight</td><td class="text-right font-bold" id="c1_cyl1_n2"></td><td class="text-right font-bold pl-2" id="c1_cyl2_n2"></td><td class="text-right text-slate-500">Kg</td></tr>
+                    <tr><td class="py-0.5">Full Weight</td><td class="text-right font-bold" id="c1_cyl1_full"></td><td class="text-right font-bold pl-2" id="c1_cyl2_full"></td><td class="text-right text-slate-500">Kg</td></tr>
+                    <tr><td class="py-0.5">Measure Weight</td><td class="text-right font-bold text-blue-900" id="c1_cyl1_meas"></td><td class="text-right font-bold pl-2 text-blue-900" id="c1_cyl2_meas"></td><td class="text-right text-slate-500">Kg</td></tr>
+                    <tr><td class="py-0.5">Lead seal</td><td class="text-right font-bold" id="c1_cyl1_seal"></td><td class="text-right font-bold pl-2" id="c1_cyl2_seal"></td><td></td></tr>
+                    <tr><td class="py-0.5">Leakage Test</td><td class="text-right font-bold" id="c1_cyl1_leak"></td><td class="text-right font-bold pl-2" id="c1_cyl2_leak"></td><td></td></tr>
+                    <tr><td class="py-0.5">Hydro Test</td><td class="text-right font-bold" id="c1_cyl1_hyd"></td><td class="text-right font-bold pl-2" id="c1_cyl2_hyd"></td><td></td></tr>
+                    <tr><td class="py-0.5">CO-2 Charged</td><td class="text-right font-bold" id="c1_cyl1_co2c"></td><td class="text-right font-bold pl-2" id="c1_cyl2_co2c"></td><td></td></tr>
+                    <tr><td class="py-0.5">N-2 Charged</td><td class="text-right font-bold" id="c1_cyl1_n2c"></td><td class="text-right font-bold pl-2" id="c1_cyl2_n2c"></td><td></td></tr>
+                    <tr><td class="py-0.5">LAST HYD TEST</td><td class="text-right font-bold" id="c1_cyl1_last"></td><td class="text-right font-bold pl-2" id="c1_cyl2_last"></td><td></td></tr>
+                  </table>
+                </div>
+
+                <!-- ITEMS CHECKED (Vertical Top-to-Bottom List) -->
+                <div class="border border-slate-900 p-1">
+                  <div class="bg-slate-200 font-bold px-1 uppercase" style="font-size: 8px;">ITEMS CHECKED</div>
+                  <div id="c1_itemsChecked" class="space-y-0.5 p-1"></div>
+                </div>
+
+                <!-- EQUIPMENT (With Tabular Required / Replaced Columns) -->
+                <div class="border border-slate-900 p-1">
+                  <div class="bg-slate-200 font-bold p-1 uppercase grid grid-cols-12 gap-1" style="font-size: 8px;">
+                    <span class="col-span-8 underline">EQUIPMENT</span>
+                    <span class="col-span-2 text-center underline">Required</span>
+                    <span class="col-span-2 text-center underline">Replaced</span>
+                  </div>
+                  <div id="c1_equipment" class="space-y-0.5 p-1"></div>
+                </div>
+
+                <!-- PRESSURE RELIEF VALVE -->
+                <div class="border border-slate-900 p-1">
+                  <div class="bg-slate-200 font-bold p-1 uppercase grid grid-cols-12 gap-1" style="font-size: 8px;">
+                    <span class="col-span-6 underline font-bold">PRESSURE RELIEF VALVE</span>
+                    <span class="col-span-3 text-center underline font-bold">ON (MmHg)</span>
+                    <span class="col-span-3 text-center underline font-bold">OFF (MmHg)</span>
+                  </div>
+                  <div class="grid grid-cols-12 gap-1 p-1 border-b border-slate-200" style="font-size: 8px;">
+                    <span class="col-span-6 font-bold">LOWER BUOYANCY</span>
+                    <span class="col-span-3 text-center font-bold" id="c1_prvLowerOn">120</span>
+                    <span class="col-span-3 text-center font-bold" id="c1_prvLowerOff">110</span>
+                  </div>
+                  <div class="grid grid-cols-12 gap-1 p-1" style="font-size: 8px;">
+                    <span class="col-span-6 font-bold">UPPER BUOYANCY</span>
+                    <span class="col-span-3 text-center font-bold" id="c1_prvUpperOn">122</span>
+                    <span class="col-span-3 text-center font-bold" id="c1_prvUpperOff">112</span>
+                  </div>
                 </div>
               </div>
-              <div class="border border-slate-900 p-1.5">
-                <div class="bg-slate-900 text-white font-bold p-0.5 text-center text-[8px] uppercase">PRESSURE RELIEF & TESTS</div>
-                <div class="p-1 space-y-1 font-mono-code text-[8.5px]">
-                  <div class="flex justify-between border-b pb-0.5"><span>Lower Buoyancy PRV:</span><strong>ON: 120 / OFF: 110 mmHg</strong></div>
-                  <div class="flex justify-between border-b pb-0.5"><span>Upper Buoyancy PRV:</span><strong>ON: 122 / OFF: 112 mmHg</strong></div>
-                  <div class="flex justify-between border-b pb-0.5"><span>GIT Test:</span><strong class="text-emerald-700">PASSED</strong></div>
-                  <div class="flex justify-between"><span>Floor Seam Test:</span><strong class="text-emerald-700">PASSED</strong></div>
+
+              <!-- RIGHT COLUMN: EMERGENCY PACK & ACCESSORIES -->
+              <div class="space-y-1.5">
+                <div class="border border-slate-900 p-1">
+                  <div class="bg-slate-200 font-bold p-1 uppercase grid grid-cols-12 gap-1" style="font-size: 8px;">
+                    <span class="col-span-6 underline">EMERGENCY PACK</span>
+                    <span class="col-span-2 text-center underline">REQUIRED</span>
+                    <span class="col-span-2 text-center underline">REPLACED</span>
+                    <span class="col-span-2 text-right underline">EXP.DATE</span>
+                  </div>
+                  <div id="c1_expiryPack" class="space-y-0.5 p-1"></div>
+                </div>
+                <div class="border border-slate-900 p-1">
+                  <div class="bg-slate-200 font-bold p-1 uppercase grid grid-cols-12 gap-1" style="font-size: 8px;">
+                    <span class="col-span-6 underline">EMERGENCY PACK</span>
+                    <span class="col-span-2 text-center underline">REQUIRED</span>
+                    <span class="col-span-2 text-center underline">REPLACED</span>
+                    <span class="col-span-2 text-right underline">REMARK</span>
+                  </div>
+                  <div id="c1_accessories" class="space-y-0.5 p-1"></div>
                 </div>
               </div>
+
             </div>
 
-            <div class="mt-2 border border-slate-900 p-2 text-center bg-slate-50">
-              <p class="text-[8px] text-slate-800 leading-tight">
-                This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with the international convention for Safety Of Life At Sea (SOLAS) 1974/1996. This certificate valid for twelve months (12) From the date of inspection.
-              </p>
+            <!-- Pressure Test & Balanced 4-Column Compliance Table -->
+            <div class="mt-2 border border-slate-900 p-1" style="font-size: 8px;">
+              <table class="w-full border-collapse border border-slate-900 mb-1 text-center" style="font-size: 8px;">
+                <thead>
+                  <tr class="bg-slate-100 font-bold">
+                    <th class="border p-0.5 text-left font-bold underline">PRESSURE TEST</th>
+                    <th class="border p-0.5 font-bold underline">TIME ON</th>
+                    <th class="border p-0.5 font-bold underline">TEMP.</th>
+                    <th class="border p-0.5 font-bold underline">WORKING PRESSURE</th>
+                    <th class="border p-0.5 font-bold underline">TIME OFF</th>
+                    <th class="border p-0.5 font-bold underline">TEMP.</th>
+                    <th class="border p-0.5 font-bold underline">WORKING PRESSURE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="border p-0.5 text-left font-bold">LOWER BUOYANCY</td>
+                    <td class="border p-0.5">0 Hours</td><td class="border p-0.5">27 C</td><td class="border p-0.5">120 MmHg</td>
+                    <td class="border p-0.5">6 Hours</td><td class="border p-0.5">28 C</td><td class="border p-0.5">112 MmHg</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-0.5 text-left font-bold">UPPER BUOYANCY</td>
+                    <td class="border p-0.5">0 Hours</td><td class="border p-0.5">27 C</td><td class="border p-0.5">122 MmHg</td>
+                    <td class="border p-0.5">6 Hours</td><td class="border p-0.5">28 C</td><td class="border p-0.5">112 MmHg</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-0.5 text-left font-bold">FLOOR</td>
+                    <td class="border p-0.5">0 Hours</td><td class="border p-0.5">27 C</td><td class="border p-0.5">100 MmHg</td>
+                    <td class="border p-0.5">6 Hours</td><td class="border p-0.5">28 C</td><td class="border p-0.5">95 MmHg</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-0.5 text-left font-bold">CENTRE COLUMN</td>
+                    <td class="border p-0.5">0 Hours</td><td class="border p-0.5">27 C</td><td class="border p-0.5">100 MmHg</td>
+                    <td class="border p-0.5">6 Hours</td><td class="border p-0.5">28 C</td><td class="border p-0.5">95 MmHg</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Balanced 4-Column Compliance Table with equal widths -->
+              <table class="w-full border-collapse border border-slate-900 text-center table-fixed" style="font-size: 8px;">
+                <tr class="bg-slate-100 font-bold">
+                  <td class="border p-1 w-1/4 font-bold underline">NAP Test</td>
+                  <td class="border p-1 w-1/4 font-bold underline">GI Test</td>
+                  <td class="border p-1 w-1/4 font-bold underline">Floor Seam Test</td>
+                  <td class="border p-1 w-1/4 font-bold underline">Davit-Launched (2 Yearly) Load Test</td>
+                </tr>
+                <tr>
+                  <td class="border p-1 font-bold" id="c1_nap">NO</td>
+                  <td class="border p-1 font-bold" id="c1_gi">NO</td>
+                  <td class="border p-1 font-bold" id="c1_floor">NO</td>
+                  <td class="border p-1 font-bold" id="c1_davit">NO</td>
+                </tr>
+              </table>
             </div>
+
           </div>
 
-          <div class="grid grid-cols-2 gap-4 text-[8.5px] pt-2 border-t border-slate-300">
-            <div class="border border-slate-900 p-1.5 text-center">
-              <span class="font-bold block uppercase text-[7.5px] text-slate-500">Service By (Technician)</span>
-              <div class="py-1.5 font-mono-code font-bold text-blue-900" id="c1_sign_tech"></div>
+          <!-- Footer Signatures Page 1 -->
+          <div class="border-t border-slate-900 pt-2 mt-2 flex justify-between items-end" style="font-size: 8px;">
+            <div>
+              <p class="italic max-w-md" style="font-size: 7.5px;">This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with SOLAS 1974/1996. This certificate valid for twelve months (12) From the date of inspection.</p>
             </div>
-            <div class="border border-slate-900 p-1.5 text-center bg-slate-50">
-              <span class="font-bold block uppercase text-[7.5px] text-slate-500">Inspect By / Authorised Signature</span>
-              <div class="py-1.5 font-mono-code font-bold text-emerald-900" id="c1_sign_super"></div>
+            <div class="text-right">
+              <p><strong>Approved By (Supervisor):</strong> <span id="c1_supervisor" class="font-bold"></span></p>
+              <div class="h-6 border-b border-dashed border-slate-900 w-32 mb-0.5"></div>
+              <p style="font-size: 7.5px;">Authorised Signature</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- B4 Certificate Page 2 (Office PDF 1 - Pyrotechnics) -->
     <div id="tab-cert2" class="tab-content hidden space-y-6">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4 no-print">
         <div>
           <h2 class="text-lg font-bold text-slate-900">Certificate Page 2: Office PDF 1 (Pyrotechnics & Equipment Schedule)</h2>
-          <p class="text-xs text-slate-500">Official B4 format with exact corporate footer matching certified ISO 9001 / UKAS branding.</p>
+          <p class="text-xs text-slate-500">Official B4 format with 8pt Arial font and ISO 9001 / UKAS branding.</p>
         </div>
         <button onclick="window.print()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition flex items-center gap-2">
           Print B4 Certificate
@@ -487,26 +629,26 @@
       </div>
 
       <div class="flex justify-center p-2 sm:p-6 bg-slate-200 rounded-2xl overflow-x-auto">
-        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 font-sans border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-size: 8.5px;">
+        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-family: Arial, Helvetica, sans-serif; font-size: 8px;">
           <div>
-            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1" style="font-size: 8px;">
               <div class="col-span-7 space-y-0.5">
-                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-mono-code font-bold uppercase ml-1" id="c2_vessel"></span></div>
-                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="font-mono-code uppercase ml-1" id="c2_port"></span></div>
-                <div class="flex"><span class="w-32 font-bold">BRAND</span>: <span class="font-mono-code ml-1" id="c2_brand"></span></div>
-                <div class="flex"><span class="w-32 font-bold">MAKER</span>: <span class="font-mono-code ml-1" id="c2_maker"></span></div>
+                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-bold uppercase ml-1" id="c2_vessel"></span></div>
+                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="uppercase ml-1" id="c2_port"></span></div>
+                <div class="flex"><span class="w-32 font-bold">BRAND</span>: <span class="ml-1" id="c2_brand"></span></div>
+                <div class="flex"><span class="w-32 font-bold">MAKER</span>: <span class="ml-1" id="c2_maker"></span></div>
               </div>
               <div class="col-span-5 space-y-0.5 border-l border-slate-900 pl-2">
-                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-mono-code font-bold text-red-600" id="c2_cert_no"></span></div>
-                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-mono-code font-bold" id="c2_date_insp"></span></div>
-                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-mono-code font-bold text-red-600" id="c2_next_date"></span></div>
-                <div class="flex justify-between"><span class="font-bold">CAPACITY / S/N</span>: <span class="font-mono-code ml-1" id="c2_cap_sn"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-bold text-red-600" id="c2_cert_no"></span></div>
+                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-bold" id="c2_date_insp"></span></div>
+                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-bold text-red-600" id="c2_next_date"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CAPACITY / S/N</span>: <span class="ml-1" id="c2_cap_sn"></span></div>
               </div>
             </div>
 
             <div class="mt-3 border-2 border-slate-900">
-              <div class="bg-slate-900 text-white font-bold p-1 text-center uppercase text-[8.5px]">PYROTECHNICS & SURVIVAL EQUIPMENT SCHEDULE</div>
-              <table class="w-full text-left border-collapse text-[8.5px]">
+              <div class="bg-slate-900 text-white font-bold p-1 text-center uppercase" style="font-size: 8px;">PYROTECHNICS & SURVIVAL EQUIPMENT SCHEDULE</div>
+              <table class="w-full text-left border-collapse" style="font-size: 8px;">
                 <thead>
                   <tr class="bg-slate-100 border-b border-slate-900 font-bold">
                     <th class="p-1.5 border-r border-slate-900">EQUIPMENT / ITEM DESCRIPTION</th>
@@ -514,18 +656,18 @@
                     <th class="p-1.5 text-center w-36">EXPIRY DATE</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-300 font-mono-code">
-                  <tr><td class="p-1.5 border-r border-slate-900">Red Hand Flares</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_flare"></td></tr>
-                  <tr><td class="p-1.5 border-r border-slate-900">Parachute Rockets</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_rocket"></td></tr>
-                  <tr><td class="p-1.5 border-r border-slate-900">Buoyant Smoke Signals</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_smoke"></td></tr>
-                  <tr><td class="p-1.5 border-r border-slate-900">First Aid Kit</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">VERIFIED</td><td class="p-1.5 text-center font-bold" id="c2_fak"></td></tr>
-                  <tr><td class="p-1.5 border-r border-slate-900">Lithium Battery RSFD-2</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold" id="c2_bat"></td></tr>
-                  <tr><td class="p-1.5 border-r border-slate-900">Anti-Seasickness Tablets</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">VERIFIED</td><td class="p-1.5 text-center font-bold" id="c2_tab"></td></tr>
+                <tbody class="divide-y divide-slate-300">
+                  <tr><td class="p-1.5 border-r border-slate-900">Red Hand Flares</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold">05 / 2028</td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Parachute Rockets</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold">05 / 2028</td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Buoyant Smoke Signals</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold">06 / 2028</td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">First Aid Kit</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">VERIFIED</td><td class="p-1.5 text-center font-bold">11 / 2027</td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Lithium Battery RSFD-2</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">REPLACED</td><td class="p-1.5 text-center font-bold">01 / 2030</td></tr>
+                  <tr><td class="p-1.5 border-r border-slate-900">Anti-Seasickness Tablets</td><td class="p-1.5 text-center border-r border-slate-900 text-emerald-700 font-bold">VERIFIED</td><td class="p-1.5 text-center font-bold">09 / 2027</td></tr>
                 </tbody>
               </table>
             </div>
 
-            <p class="text-[8px] text-slate-700 text-center leading-tight mt-3">
+            <p class="text-slate-700 text-center leading-tight mt-3" style="font-size: 8px;">
               This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with the international convention for Safety Of Life At Sea (SOLAS) 1974/1996. This certificate valid for twelve months (12) From the date of inspection.
             </p>
           </div>
@@ -534,25 +676,25 @@
           <div class="space-y-2">
             <div class="flex justify-end pr-8">
               <div class="text-center">
-                <div class="h-6 font-mono font-bold text-emerald-800 text-xs" id="c2_sign"></div>
-                <div class="border-t border-slate-900 pt-0.5 font-bold text-[7.5px]">AUTHORISED SIGNATURE</div>
+                <div class="h-6 font-bold text-emerald-800" style="font-size: 8px;" id="c2_sign">CAPTAIN K. CHEN</div>
+                <div class="border-t border-slate-900 pt-0.5 font-bold" style="font-size: 8px;">AUTHORISED SIGNATURE</div>
               </div>
             </div>
 
-            <div class="border-t-2 border-slate-900 pt-2 text-[6.5px] text-slate-800">
+            <div class="border-t-2 border-slate-900 pt-2 text-slate-800" style="font-size: 8px;">
               <div class="grid grid-cols-12 gap-1 items-start">
                 <div class="col-span-2 flex items-center space-x-1 border border-blue-900 p-1 bg-white">
-                  <div class="border border-blue-900 p-0.5 text-center font-bold text-[7px] text-blue-900 leading-none">
-                    CERTIFIED<br><span class="text-[11px]">R</span><br><span class="text-[5px]">ISO 9001</span>
+                  <div class="border border-blue-900 p-0.5 text-center font-bold text-blue-900 leading-none" style="font-size: 8px;">
+                    CERTIFIED<br><span style="font-size: 10px;">R</span><br><span style="font-size: 6px;">ISO 9001</span>
                   </div>
-                  <div class="text-center font-bold text-[6.5px] text-blue-900">
+                  <div class="text-center font-bold text-blue-900" style="font-size: 8px;">
                     <div class="border border-blue-900 px-0.5">UKAS</div>
-                    <div class="text-[4.5px] mt-0.5">001</div>
+                    <div style="font-size: 6px;" class="mt-0.5">001</div>
                   </div>
                 </div>
 
                 <div class="col-span-4 border-l border-slate-400 pl-1.5 space-y-0.5">
-                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE SERVICES SDN BHD</div>
+                  <div class="font-bold text-blue-900">KEISHA MARINE SERVICES SDN BHD</div>
                   <div>200801012887 (814175-D)</div>
                   <div class="font-bold">HEAD OFFICE :</div>
                   <div>No. 21 & 23, Jalan Selat Selatan 7/KS05,<br>Taman Perindustrian Sobena Jaya, Pandamaran,<br>42000 Port Klang, Selangor Darul Ehsan, Malaysia.</div>
@@ -562,7 +704,7 @@
                 </div>
 
                 <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
-                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div class="font-bold text-blue-900">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
                   <div>201301004175 (1034018-W)</div>
                   <div class="font-bold">MIRI BRANCH OFFICE :</div>
                   <div>Lot 977 & 978, Block 5, Lorong Desa Senadin,<br>1A-1A, Off Jalan Lutong, 98000 Miri, Sarawak, Malaysia.</div>
@@ -572,7 +714,7 @@
                 </div>
 
                 <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
-                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div class="font-bold text-blue-900">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
                   <div>201301004175 (1034018-W)</div>
                   <div class="font-bold">LABUAN BRANCH OFFICE :</div>
                   <div>Lot 17 & 18, Lusu Warehouse,<br>Jalan Patau-Patau, 87000 W.P. Labuan, Malaysia.</div>
@@ -581,7 +723,7 @@
                   <div>Email : keishasb@keishamarine.com</div>
                 </div>
               </div>
-              <div class="text-center font-bold text-slate-900 text-[8px] mt-2 border-t pt-1">
+              <div class="text-center font-bold text-slate-900 mt-2 border-t pt-1" style="font-size: 8px;">
                 www.keishamarine.com
               </div>
             </div>
@@ -590,12 +732,11 @@
       </div>
     </div>
 
-    <!-- B4 Certificate Page 3 (Office PDF 2 - Cylinders & Provisions) -->
     <div id="tab-cert3" class="tab-content hidden space-y-6">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4 no-print">
         <div>
           <h2 class="text-lg font-bold text-slate-900">Certificate Page 3: Office PDF 2 (Cylinders & Provisions Log)</h2>
-          <p class="text-xs text-slate-500">Official B4 format with exact corporate footer matching certified ISO 9001 / UKAS branding.</p>
+          <p class="text-xs text-slate-500">Official B4 format with 8pt Arial font and ISO 9001 / UKAS branding.</p>
         </div>
         <button onclick="window.print()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition flex items-center gap-2">
           Print B4 Certificate
@@ -603,27 +744,27 @@
       </div>
 
       <div class="flex justify-center p-2 sm:p-6 bg-slate-200 rounded-2xl overflow-x-auto">
-        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 font-sans border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-size: 8.5px;">
+        <div class="b4-certificate-page bg-white text-slate-900 shadow-2xl p-3 border-2 border-slate-900 flex flex-col justify-between" style="width: 238mm; min-height: 341mm; font-family: Arial, Helvetica, sans-serif; font-size: 8px;">
           <div>
-            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1 text-[8.5px]">
+            <div class="border-2 border-slate-900 p-2 grid grid-cols-12 gap-1" style="font-size: 8px;">
               <div class="col-span-7 space-y-0.5">
-                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-mono-code font-bold uppercase ml-1" id="c3_vessel"></span></div>
-                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="font-mono-code uppercase ml-1" id="c3_port"></span></div>
-                <div class="flex"><span class="w-32 font-bold">BRAND</span>: <span class="font-mono-code ml-1" id="c3_brand"></span></div>
-                <div class="flex"><span class="w-32 font-bold">MAKER</span>: <span class="font-mono-code ml-1" id="c3_maker"></span></div>
+                <div class="flex"><span class="w-32 font-bold">VESSEL NAME</span>: <span class="font-bold uppercase ml-1" id="c3_vessel"></span></div>
+                <div class="flex"><span class="w-32 font-bold">PORT OF REGISTRY</span>: <span class="uppercase ml-1" id="c3_port"></span></div>
+                <div class="flex"><span class="w-32 font-bold">BRAND</span>: <span class="ml-1" id="c3_brand"></span></div>
+                <div class="flex"><span class="w-32 font-bold">MAKER</span>: <span class="ml-1" id="c3_maker"></span></div>
               </div>
               <div class="col-span-5 space-y-0.5 border-l border-slate-900 pl-2">
-                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-mono-code font-bold text-red-600" id="c3_cert_no"></span></div>
-                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-mono-code font-bold" id="c3_date_insp"></span></div>
-                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-mono-code font-bold text-red-600" id="c3_next_date"></span></div>
-                <div class="flex justify-between"><span class="font-bold">CAPACITY / S/N</span>: <span class="font-mono-code ml-1" id="c3_cap_sn"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CERTIFICATE No.</span>: <span class="font-bold text-red-600" id="c3_cert_no"></span></div>
+                <div class="flex justify-between"><span class="font-bold">DATE OF INSPECTION</span>: <span class="font-bold" id="c3_date_insp"></span></div>
+                <div class="flex justify-between"><span class="font-bold">NEXT INSPECTION DATE</span>: <span class="font-bold text-red-600" id="c3_next_date"></span></div>
+                <div class="flex justify-between"><span class="font-bold">CAPACITY / S/N</span>: <span class="ml-1" id="c3_cap_sn"></span></div>
               </div>
             </div>
 
             <div class="mt-3 border-2 border-slate-900">
-              <div class="bg-slate-900 text-white font-bold p-1 text-center uppercase text-[8.5px]">GAS CYLINDERS & PROVISIONS EXPIRY LOG</div>
-              <div class="p-3 space-y-3">
-                <div class="grid grid-cols-2 gap-3 font-mono-code text-[9.5px]">
+              <div class="bg-slate-900 text-white font-bold p-1 text-center uppercase" style="font-size: 8px;">GAS CYLINDERS & PROVISIONS EXPIRY LOG</div>
+              <div class="p-3 space-y-3" style="font-size: 8px;">
+                <div class="grid grid-cols-2 gap-3" style="font-size: 8px;">
                   <div class="p-2.5 border-2 border-slate-800 rounded bg-slate-50 space-y-1">
                     <span class="font-bold text-slate-900 block border-b pb-0.5">CYLINDER NO. 1</span>
                     <div>Serial No: <strong id="c3_cyl1_no"></strong></div>
@@ -636,20 +777,20 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 font-mono-code text-[9.5px] border-t pt-2">
-                  <div class="p-2.5 border rounded bg-white">
+                <div class="grid grid-cols-2 gap-2 border-t pt-2" style="font-size: 8px;">
+                  <div class="p-2 border rounded bg-white">
                     <span class="font-bold text-slate-800 block">DRINKING WATER (500ml) EXPIRY</span>
-                    <strong class="text-red-700 text-sm" id="c3_water"></strong>
+                    <strong class="text-red-700" style="font-size: 9px;" id="c3_water">08 / 2029</strong>
                   </div>
-                  <div class="p-2.5 border rounded bg-white">
+                  <div class="p-2 border rounded bg-white">
                     <span class="font-bold text-slate-800 block">FOOD RATIONS (500gm) EXPIRY</span>
-                    <strong class="text-red-700 text-sm" id="c3_food"></strong>
+                    <strong class="text-red-700" style="font-size: 9px;" id="c3_food">04 / 2029</strong>
                   </div>
                 </div>
               </div>
             </div>
 
-            <p class="text-[8px] text-slate-700 text-center leading-tight mt-3">
+            <p class="text-slate-700 text-center leading-tight mt-3" style="font-size: 8px;">
               This is to certify that the above liferaft has been surveyed, tested in accordance with the requirements of the manufacturer and in compliance with the international convention for Safety Of Life At Sea (SOLAS) 1974/1996. This certificate valid for twelve months (12) From the date of inspection.
             </p>
           </div>
@@ -658,25 +799,25 @@
           <div class="space-y-2">
             <div class="flex justify-end pr-8">
               <div class="text-center">
-                <div class="h-6 font-mono font-bold text-emerald-800 text-xs" id="c3_sign"></div>
-                <div class="border-t border-slate-900 pt-0.5 font-bold text-[7.5px]">AUTHORISED SIGNATURE</div>
+                <div class="h-6 font-bold text-emerald-800" style="font-size: 8px;" id="c3_sign">CAPTAIN K. CHEN</div>
+                <div class="border-t border-slate-900 pt-0.5 font-bold" style="font-size: 8px;">AUTHORISED SIGNATURE</div>
               </div>
             </div>
 
-            <div class="border-t-2 border-slate-900 pt-2 text-[6.5px] text-slate-800">
+            <div class="border-t-2 border-slate-900 pt-2 text-slate-800" style="font-size: 8px;">
               <div class="grid grid-cols-12 gap-1 items-start">
                 <div class="col-span-2 flex items-center space-x-1 border border-blue-900 p-1 bg-white">
-                  <div class="border border-blue-900 p-0.5 text-center font-bold text-[7px] text-blue-900 leading-none">
-                    CERTIFIED<br><span class="text-[11px]">R</span><br><span class="text-[5px]">ISO 9001</span>
+                  <div class="border border-blue-900 p-0.5 text-center font-bold text-blue-900 leading-none" style="font-size: 8px;">
+                    CERTIFIED<br><span style="font-size: 10px;">R</span><br><span style="font-size: 6px;">ISO 9001</span>
                   </div>
-                  <div class="text-center font-bold text-[6.5px] text-blue-900">
+                  <div class="text-center font-bold text-blue-900" style="font-size: 8px;">
                     <div class="border border-blue-900 px-0.5">UKAS</div>
-                    <div class="text-[4.5px] mt-0.5">001</div>
+                    <div style="font-size: 6px;" class="mt-0.5">001</div>
                   </div>
                 </div>
 
                 <div class="col-span-4 border-l border-slate-400 pl-1.5 space-y-0.5">
-                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE SERVICES SDN BHD</div>
+                  <div class="font-bold text-blue-900">KEISHA MARINE SERVICES SDN BHD</div>
                   <div>200801012887 (814175-D)</div>
                   <div class="font-bold">HEAD OFFICE :</div>
                   <div>No. 21 & 23, Jalan Selat Selatan 7/KS05,<br>Taman Perindustrian Sobena Jaya, Pandamaran,<br>42000 Port Klang, Selangor Darul Ehsan, Malaysia.</div>
@@ -686,7 +827,7 @@
                 </div>
 
                 <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
-                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div class="font-bold text-blue-900">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
                   <div>201301004175 (1034018-W)</div>
                   <div class="font-bold">MIRI BRANCH OFFICE :</div>
                   <div>Lot 977 & 978, Block 5, Lorong Desa Senadin,<br>1A-1A, Off Jalan Lutong, 98000 Miri, Sarawak, Malaysia.</div>
@@ -696,7 +837,7 @@
                 </div>
 
                 <div class="col-span-3 border-l border-slate-400 pl-1.5 space-y-0.5">
-                  <div class="font-bold text-blue-900 text-[7.5px]">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
+                  <div class="font-bold text-blue-900">KEISHA MARINE EAST MALAYSIA SDN BHD</div>
                   <div>201301004175 (1034018-W)</div>
                   <div class="font-bold">LABUAN BRANCH OFFICE :</div>
                   <div>Lot 17 & 18, Lusu Warehouse,<br>Jalan Patau-Patau, 87000 W.P. Labuan, Malaysia.</div>
@@ -705,7 +846,7 @@
                   <div>Email : keishasb@keishamarine.com</div>
                 </div>
               </div>
-              <div class="text-center font-bold text-slate-900 text-[8px] mt-2 border-t pt-1">
+              <div class="text-center font-bold text-slate-900 mt-2 border-t pt-1" style="font-size: 8px;">
                 www.keishamarine.com
               </div>
             </div>
@@ -716,7 +857,6 @@
 
   </main>
 
-  <!-- Toast Notification Modal -->
   <div id="toast-modal" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
     <div class="bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl border border-slate-700 flex items-center gap-3">
       <div class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-xs font-bold text-slate-950">✓</div>
@@ -731,6 +871,12 @@
     let currentRecordState = "Draft";
     let currentRole = "technician";
 
+    const emergencyPackExpiryList = [
+      "Red Hand Flares", "Parachute Rockets", "Buoyant Smoke Signals",
+      "Drinking Water 500ml", "Food Ration 500gm", "Anti S/S Tablets",
+      "First Aid Kit", "Lithium Battery", "Analgesic Set"
+    ];
+
     const itemsCheckedList = [
       "Pressure Relief Valve", "Inlet Valve", "Fibrewasher-2 pcs", "Topping Up Valve",
       "Deflation Valve", "Fibreglass Container", "Vallse", "Ship's Name On Container",
@@ -744,7 +890,7 @@
       "Operating Cable", "ID Container with ID Card"
     ];
 
-    const emergencyPackList = [
+    const emergencyPackAccessoriesList = [
       "Emergency Bags", "Immediate Action Card", "Bellow Pump", "Repair Kit",
       "Glue For Repair Kit", "Leak Stoppers", "Rubber Bung", "Sea Anchor",
       "Survival Inst/Manual", "Paddles", "Paddle Bags", "Bailers", "Sponges",
@@ -756,39 +902,77 @@
     ];
 
     function renderDynamicChecklists() {
-      // 1. Items Checked
+      // 1. Section 2: Emergency Pack (Required / Replaced / Expiry with "--")
+      const sec2Tbody = document.getElementById("sec2-pack-tbody");
+      sec2Tbody.innerHTML = emergencyPackExpiryList.map((item, idx) => `
+        <tr>
+          <td class="p-2 font-sans font-semibold border-r">${item}</td>
+          <td class="p-2 text-center border-r">
+            <select id="sec2_req_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+              <option value="REQUIRED">REQUIRED</option>
+              <option value="--">--</option>
+            </select>
+          </td>
+          <td class="p-2 text-center border-r">
+            <select id="sec2_rep_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+              <option value="REPLACED">REPLACED</option>
+              <option value="--">--</option>
+            </select>
+          </td>
+          <td class="p-2"><input type="date" id="sec2_exp_${idx}" value="2028-05-15" oninput="syncCertificates()" class="w-full p-1 border rounded bg-white text-[11px]"></td>
+        </tr>
+      `).join('');
+
+      // 2. Section 3: ITEMS CHECKED (Vertical Top-to-Bottom List)
       const icContainer = document.getElementById("items-checked-container");
       icContainer.innerHTML = itemsCheckedList.map((item, idx) => `
         <div class="p-2 border rounded-lg bg-slate-50 flex items-center justify-between">
           <span class="font-semibold text-slate-800 text-[11px]">${item}</span>
-          <select id="ic_${idx}" class="p-1 border rounded bg-white text-[11px] font-bold">
-            <option value="YES">YES</option>
-            <option value="NO">NO</option>
+          <select id="ic_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+            <option value="CHECKED OK">CHECKED OK</option>
             <option value="REPLACED">REPLACED</option>
+            <option value="N/A">N/A</option>
+            <option value="--">--</option>
           </select>
         </div>
       `).join('');
 
-      // 2. Equipment
+      // 3. Section 4: EQUIPMENT (Required / Replaced with "--")
       const eqContainer = document.getElementById("equipment-container");
       eqContainer.innerHTML = equipmentList.map((item, idx) => `
         <div class="p-2 border rounded-lg bg-slate-50 flex items-center justify-between">
           <span class="font-semibold text-slate-800 text-[11px]">${item}</span>
           <div class="flex gap-2">
-            <select id="eq_req_${idx}" class="p-1 border rounded bg-white text-[11px] font-semibold"><option value="REQ">REQ</option><option value="--">--</option></select>
-            <select id="eq_rep_${idx}" class="p-1 border rounded bg-white text-[11px] font-semibold"><option value="OK">OK</option><option value="REPLACED">REPLACED</option></select>
+            <select id="eq_req_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+              <option value="Required">Required</option>
+              <option value="--">--</option>
+            </select>
+            <select id="eq_rep_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+              <option value="Replaced">Replaced</option>
+              <option value="--">--</option>
+            </select>
           </div>
         </div>
       `).join('');
 
-      // 3. Emergency Pack
+      // 4. Section 5: EMERGENCY PACK ACCESSORIES & REMARKS (with "--")
       const epTbody = document.getElementById("emergency-pack-tbody");
-      epTbody.innerHTML = emergencyPackList.map((item, idx) => `
+      epTbody.innerHTML = emergencyPackAccessoriesList.map((item, idx) => `
         <tr>
           <td class="p-2 font-sans font-semibold border-r">${item}</td>
-          <td class="p-2 text-center border-r"><input type="checkbox" id="ep_req_${idx}" checked class="w-4 h-4 text-blue-600 rounded"></td>
-          <td class="p-2 text-center border-r"><input type="checkbox" id="ep_rep_${idx}" class="w-4 h-4 text-blue-600 rounded"></td>
-          <td class="p-2"><input type="text" id="ep_rem_${idx}" value="OK / 2028" class="w-full p-1 border rounded bg-white font-mono-code text-[11px]"></td>
+          <td class="p-2 text-center border-r">
+            <select id="ep_req_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+              <option value="Required">Required</option>
+              <option value="--">--</option>
+            </select>
+          </td>
+          <td class="p-2 text-center border-r">
+            <select id="ep_rep_${idx}" onchange="syncCertificates()" class="p-1 border rounded bg-white text-[11px] font-bold">
+              <option value="Replaced">Replaced</option>
+              <option value="--">--</option>
+            </select>
+          </td>
+          <td class="p-2"><input type="text" id="ep_rem_${idx}" value="OK / 2028" oninput="syncCertificates()" class="w-full p-1 border rounded bg-white text-[11px]"></td>
         </tr>
       `).join('');
     }
@@ -877,7 +1061,7 @@
       };
       const formatDate = val => val ? val.split('-').reverse().join(' / ') : "";
 
-      // Page 1
+      // Page 1 Headers & Particulars
       document.getElementById("c1_cert_no").textContent = v("f_cert_no");
       document.getElementById("c1_vessel").textContent = v("f_vessel");
       document.getElementById("c1_port").textContent = v("f_port");
@@ -891,46 +1075,101 @@
       document.getElementById("c1_dom").textContent = v("f_dom");
       document.getElementById("c1_painter").textContent = v("f_painter_len");
       document.getElementById("c1_height").textContent = v("f_max_height");
-      document.getElementById("c1_cyl1_no").textContent = v("f_cyl1_no");
-      document.getElementById("c1_cyl1_meas").textContent = v("f_cyl1_measured") ? v("f_cyl1_measured") + " Kg" : "";
-      document.getElementById("c1_cyl2_no").textContent = v("f_cyl2_no");
-      document.getElementById("c1_cyl2_meas").textContent = v("f_cyl2_measured") ? v("f_cyl2_measured") + " Kg" : "";
-      document.getElementById("c1_sign_tech").textContent = v("f_tech_name");
-      document.getElementById("c1_sign_super").textContent = v("f_super_name");
 
-      // Page 2
-      document.getElementById("c2_cert_no").textContent = v("f_cert_no");
-      document.getElementById("c2_vessel").textContent = v("f_vessel");
-      document.getElementById("c2_port").textContent = v("f_port");
-      document.getElementById("c2_brand").textContent = v("f_brand");
-      document.getElementById("c2_maker").textContent = v("f_maker");
-      document.getElementById("c2_date_insp").textContent = formatDate(v("f_insp_date"));
-      document.getElementById("c2_next_date").textContent = formatDate(v("f_next_insp_date"));
-      document.getElementById("c2_cap_sn").textContent = (v("f_capacity") ? v("f_capacity") + " Persons" : "") + (v("f_sn") ? " / " + v("f_sn") : "");
-      document.getElementById("c2_flare").textContent = "05 / 2028";
-      document.getElementById("c2_rocket").textContent = "05 / 2028";
-      document.getElementById("c2_smoke").textContent = "06 / 2028";
-      document.getElementById("c2_fak").textContent = "11 / 2027";
-      document.getElementById("c2_bat").textContent = "01 / 2030";
-      document.getElementById("c2_tab").textContent = "09 / 2027";
-      document.getElementById("c2_sign").textContent = v("f_super_name");
+      // Page 1 Cylinder Nos Table
+      document.getElementById("c1_cyl1_tare").textContent = v("f_cyl1_tare");
+      document.getElementById("c1_cyl2_tare").textContent = v("f_cyl2_tare");
+      document.getElementById("c1_cyl1_co2").textContent = v("f_cyl1_co2");
+      document.getElementById("c1_cyl2_co2").textContent = v("f_cyl2_co2");
+      document.getElementById("c1_cyl1_n2").textContent = v("f_cyl1_n2");
+      document.getElementById("c1_cyl2_n2").textContent = v("f_cyl2_n2");
+      document.getElementById("c1_cyl1_full").textContent = v("f_cyl1_full");
+      document.getElementById("c1_cyl2_full").textContent = v("f_cyl2_full");
+      document.getElementById("c1_cyl1_meas").textContent = v("f_cyl1_measured");
+      document.getElementById("c1_cyl2_meas").textContent = v("f_cyl2_measured");
+      document.getElementById("c1_cyl1_seal").textContent = v("f_cyl1_seal");
+      document.getElementById("c1_cyl2_seal").textContent = v("f_cyl2_seal");
+      document.getElementById("c1_cyl1_leak").textContent = v("f_cyl1_leak");
+      document.getElementById("c1_cyl2_leak").textContent = v("f_cyl2_leak");
+      document.getElementById("c1_cyl1_hyd").textContent = v("f_cyl1_hyd");
+      document.getElementById("c1_cyl2_hyd").textContent = v("f_cyl2_hyd");
+      document.getElementById("c1_cyl1_co2c").textContent = v("f_cyl1_co2c");
+      document.getElementById("c1_cyl2_co2c").textContent = v("f_cyl2_co2c");
+      document.getElementById("c1_cyl1_n2c").textContent = v("f_cyl1_n2c");
+      document.getElementById("c1_cyl2_n2c").textContent = v("f_cyl2_n2c");
+      document.getElementById("c1_cyl1_last").textContent = v("f_cyl1_last");
+      document.getElementById("c1_cyl2_last").textContent = v("f_cyl2_last");
 
-      // Page 3
-      document.getElementById("c3_cert_no").textContent = v("f_cert_no");
-      document.getElementById("c3_vessel").textContent = v("f_vessel");
-      document.getElementById("c3_port").textContent = v("f_port");
-      document.getElementById("c3_brand").textContent = v("f_brand");
-      document.getElementById("c3_maker").textContent = v("f_maker");
-      document.getElementById("c3_date_insp").textContent = formatDate(v("f_insp_date"));
-      document.getElementById("c3_next_date").textContent = formatDate(v("f_next_insp_date"));
-      document.getElementById("c3_cap_sn").textContent = (v("f_capacity") ? v("f_capacity") + " Persons" : "") + (v("f_sn") ? " / " + v("f_sn") : "");
+      // Page 1 Left Column Stack: Items Checked, Equipment, PRV
+      document.getElementById("c1_itemsChecked").innerHTML = itemsCheckedList.map((item, idx) => {
+        const sel = document.getElementById(`ic_${idx}`);
+        const status = sel ? sel.value : "CHECKED OK";
+        return `<div class="flex justify-between border-b border-slate-300 pb-0.5" style="font-size: 7.5px;"><span>${item}</span><span class="font-bold">${status}</span></div>`;
+      }).join('');
+
+      document.getElementById("c1_equipment").innerHTML = equipmentList.map((item, idx) => {
+        const reqEl = document.getElementById(`eq_req_${idx}`);
+        const repEl = document.getElementById(`eq_rep_${idx}`);
+        const reqVal = reqEl ? reqEl.value : "Required";
+        const repVal = repEl ? repEl.value : "--";
+        return `<div class="grid grid-cols-12 gap-1 border-b border-slate-300 pb-0.5 items-center" style="font-size: 7.5px;"><span class="col-span-8">${item}</span><span class="col-span-2 text-center font-bold">${reqVal}</span><span class="col-span-2 text-center font-bold">${repVal}</span></div>`;
+      }).join('');
+
+      document.getElementById("c1_prvLowerOn").textContent = v("f_prv_lower_on");
+      document.getElementById("c1_prvLowerOff").textContent = v("f_prv_lower_off");
+      document.getElementById("c1_prvUpperOn").textContent = v("f_prv_upper_on");
+      document.getElementById("c1_prvUpperOff").textContent = v("f_prv_upper_off");
+
+      // Page 1 Right Column Stack: Emergency Pack Expiry & Accessories (Exact Tabular Layout)
+      document.getElementById("c1_expiryPack").innerHTML = emergencyPackExpiryList.map((item, idx) => {
+        const dt = document.getElementById(`sec2_exp_${idx}`);
+        const reqEl = document.getElementById(`sec2_req_${idx}`);
+        const repEl = document.getElementById(`sec2_rep_${idx}`);
+        const reqVal = reqEl ? reqEl.value : "REQUIRED";
+        const repVal = repEl ? repEl.value : "--";
+        return `<div class="grid grid-cols-12 gap-1 border-b border-slate-300 pb-0.5 items-center" style="font-size: 7.5px;"><span class="col-span-6">${item}</span><span class="col-span-2 text-center font-bold">${reqVal}</span><span class="col-span-2 text-center font-bold">${repVal}</span><span class="col-span-2 text-right font-bold">${dt ? dt.value : '2028-05-15'}</span></div>`;
+      }).join('');
+
+      document.getElementById("c1_accessories").innerHTML = emergencyPackAccessoriesList.map((item, idx) => {
+        const reqEl = document.getElementById(`ep_req_${idx}`);
+        const repEl = document.getElementById(`ep_rep_${idx}`);
+        const reqVal = reqEl ? reqEl.value : "Required";
+        const repVal = repEl ? repEl.value : "--";
+        const rm = document.getElementById(`ep_rem_${idx}`);
+        return `<div class="grid grid-cols-12 gap-1 border-b border-slate-300 pb-0.5 items-center" style="font-size: 7px;"><span class="col-span-6">${item}</span><span class="col-span-2 text-center font-bold">${reqVal}</span><span class="col-span-2 text-center font-bold">${repVal}</span><span class="col-span-2 text-right font-bold">${rm ? rm.value : 'OK'}</span></div>`;
+      }).join('');
+
+      // Compliance Test Matrix sync matching checklist layout precisely
+      const napEl = document.getElementById("f_nap_test");
+      const giEl = document.getElementById("f_gi_test");
+      const floorEl = document.getElementById("f_floor_test");
+      const davitEl = document.getElementById("f_davit_test");
+
+      if (napEl) document.getElementById("c1_nap").textContent = napEl.value;
+      if (giEl) document.getElementById("c1_gi").textContent = giEl.value;
+      if (floorEl) document.getElementById("c1_floor").textContent = floorEl.value;
+      if (davitEl) document.getElementById("c1_davit").textContent = davitEl.value;
+
+      document.getElementById("c1_supervisor").textContent = v("f_super_name");
+
+      // Page 2 & 3 Headers
+      ['c2', 'c3'].forEach(prefix => {
+        document.getElementById(`${prefix}_cert_no`).textContent = v("f_cert_no");
+        document.getElementById(`${prefix}_vessel`).textContent = v("f_vessel");
+        document.getElementById(`${prefix}_port`).textContent = v("f_port");
+        document.getElementById(`${prefix}_brand`).textContent = v("f_brand");
+        document.getElementById(`${prefix}_maker`).textContent = v("f_maker");
+        document.getElementById(`${prefix}_date_insp`).textContent = formatDate(v("f_insp_date"));
+        document.getElementById(`${prefix}_next_date`).textContent = formatDate(v("f_next_insp_date"));
+        document.getElementById(`${prefix}_cap_sn`).textContent = (v("f_capacity") ? v("f_capacity") + " Persons" : "") + (v("f_sn") ? " / " + v("f_sn") : "");
+        document.getElementById(`${prefix}_sign`).textContent = v("f_super_name");
+      });
+
+      // Page 3 Cylinders
       document.getElementById("c3_cyl1_no").textContent = v("f_cyl1_no");
       document.getElementById("c3_cyl1_meas").textContent = v("f_cyl1_measured") ? v("f_cyl1_measured") + " Kg" : "";
       document.getElementById("c3_cyl2_no").textContent = v("f_cyl2_no");
       document.getElementById("c3_cyl2_meas").textContent = v("f_cyl2_measured") ? v("f_cyl2_measured") + " Kg" : "";
-      document.getElementById("c3_water").textContent = "08 / 2029";
-      document.getElementById("c3_food").textContent = "04 / 2029";
-      document.getElementById("c3_sign").textContent = v("f_super_name");
     }
 
     function fillSampleData() {
